@@ -1,0 +1,26 @@
+<!-- @dsCard group="Spacing" viewport="700x190" name="Spacing scale" subtitle="4px base — the rhythm of every panel & gap" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; background: var(--bg-canvas); padding: 26px; }
+  .rows { display: flex; flex-direction: column; gap: 9px; }
+  .row { display: flex; align-items: center; gap: 14px; }
+  .bar { height: 14px; background: var(--accent-soft); border-left: 2px solid var(--accent); border-radius: 0 3px 3px 0; }
+  .meta { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); width: 130px; }
+</style>
+</head>
+<body>
+  <div class="rows">
+    <div class="row"><div class="meta">space-2 · 8</div><div class="bar" style="width: 8px;"></div></div>
+    <div class="row"><div class="meta">space-3 · 12</div><div class="bar" style="width: 12px;"></div></div>
+    <div class="row"><div class="meta">space-4 · 16</div><div class="bar" style="width: 16px;"></div></div>
+    <div class="row"><div class="meta">space-5 · 20</div><div class="bar" style="width: 20px;"></div></div>
+    <div class="row"><div class="meta">space-6 · 24</div><div class="bar" style="width: 24px;"></div></div>
+    <div class="row"><div class="meta">space-7 · 32</div><div class="bar" style="width: 32px;"></div></div>
+    <div class="row"><div class="meta">space-9 · 48</div><div class="bar" style="width: 48px;"></div></div>
+  </div>
+</body>
+</html>

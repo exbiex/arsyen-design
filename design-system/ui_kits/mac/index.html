@@ -1,0 +1,163 @@
+<!-- @dsCard group="Mac App" viewport="1440x900" name="Mac App — Work" subtitle="Creative OS · Work workflow · per-category panels · Notes/ToDo/Inbox/Calendar · fullscreen focus · live theming" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Arsyen — Work</title>
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  html, body { height: 100%; }
+  body { margin: 0; background: var(--bg); overflow: hidden; }
+  #app { height: 100vh; }
+  .ars-shell { position: relative; z-index: 1; height: 100vh; display: flex; flex-direction: column; }
+  .ars-body { flex: 1; min-height: 0; }
+  .ars-scroll { height: 100%; overflow-y: auto; }
+  @keyframes ars-view-in { from { opacity: 0.55; transform: translateY(1.5%); } to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: no-preference) { .ars-view { animation: ars-view-in var(--dur-view) var(--ease-out); } }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="icons.jsx"></script>
+<script type="text/babel" src="ui.jsx"></script>
+<script type="text/babel" src="appearance.jsx"></script>
+<script type="text/babel" src="work.jsx"></script>
+<script type="text/babel" src="work_space.jsx"></script>
+<script type="text/babel" src="work_views.jsx"></script>
+<script type="text/babel" src="screens_more.jsx"></script>
+</head>
+<body>
+<div id="app"></div>
+<script type="text/babel" data-presets="react">
+  const A = window.AIcon;
+  const WALL = {
+    work:     ["#ff555d", "#8a5cff", "#d83b8e", "#3f6fd6", "#e8843a"],
+    discover: ["#8a5cff", "#3f6fd6", "#6a36c8", "#1fb6a8", "#ff555d"],
+    feed:     ["#f3508a", "#8a5cff", "#3f6fd6", "#ff555d", "#e8843a"],
+    tools:    ["#1fb6a8", "#3f6fd6", "#3bbf7a", "#8a5cff", "#ff555d"],
+    settings: ["#ff555d", "#f5b544", "#d83b8e", "#3f6fd6", "#8a5cff"],
+  };
+  const SEARCH = { work: "Search your work…", discover: "Search artists, crew, skills…", feed: "Search the feed…", tools: "Jump to anything…", settings: "Search settings…" };
+  const BAR_H = 76;
+
+  function Wallpaper({ flow }) {
+    const p = WALL[flow] || WALL.work;
+    const vars = { "--b1": p[0], "--b2": p[1], "--b3": p[2], "--b4": p[3], "--b5": p[4] };
+    return (<div className="ars-wall" style={vars} aria-hidden="true"><div className="ars-wall__b" /><div className="ars-wall__b" /><div className="ars-wall__b" /><div className="ars-wall__b" /><div className="ars-wall__b" /></div>);
+  }
+
+  /* ---- WORK workflow: rail + persistent workspace (per category) + fullscreen ---- */
+  function WorkView({ fullscreen, setFullscreen }) {
+    const W = window.ArsWork, V = window.ArsWorkViews || {};
+    const [cat, setCat] = React.useState("projects");
+    const [project, setProject] = React.useState(W.PROJECTS[0]);
+    const railW = cat === "calendar" ? 300 : 282;
+
+    let ws;
+    if (cat === "projects") ws = <window.ArsWorkspace project={project} fullscreen={fullscreen} setFullscreen={setFullscreen} />;
+    else if (cat === "notes") ws = <V.Notes fullscreen={fullscreen} setFullscreen={setFullscreen} />;
+    else if (cat === "tasks") ws = <V.Todo fullscreen={fullscreen} setFullscreen={setFullscreen} />;
+    else if (cat === "inbox") ws = <V.Inbox fullscreen={fullscreen} setFullscreen={setFullscreen} />;
+    else if (cat === "calendar") ws = <V.Calendar fullscreen={fullscreen} setFullscreen={setFullscreen} />;
+    else ws = <V.Generic cat={cat} fullscreen={fullscreen} setFullscreen={setFullscreen} />;
+
+    return (
+      <div style={{ height: "100%", padding: fullscreen ? "16px 22px 14px" : "16px 20px 12px", display: "flex", gap: 16, boxSizing: "border-box" }}>
+        <div style={{ width: fullscreen ? 0 : railW, flex: "none", overflow: "hidden", opacity: fullscreen ? 0 : 1, transition: "width var(--dur-slow) var(--ease-out), opacity var(--dur-base) var(--ease-out)", display: "flex" }}>
+          <W.WorkRail cat={cat} setCat={setCat} project={project} setProject={setProject} />
+        </div>
+        <div style={{ flex: 1, minWidth: 0, display: "flex", transition: "max-width var(--dur-slow) var(--ease-out)" }}>{ws}</div>
+      </div>
+    );
+  }
+
+  function FeedView() {
+    return (
+      <div className="ars-scroll"><div style={{ maxWidth: 760, margin: "0 auto", padding: "60px 24px 80px", textAlign: "center" }}>
+        <span style={{ display: "inline-flex", width: 60, height: 60, borderRadius: "var(--radius-xl)", background: "var(--accent-soft)", border: "1px solid var(--accent-line)", alignItems: "center", justifyContent: "center", color: "var(--accent)" }}><A name="feed" size={28} /></span>
+        <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 34, color: "var(--fg1)", letterSpacing: "-.02em", marginTop: 22 }}>Feed</div>
+        <div style={{ fontSize: 16, color: "var(--fg2)", marginTop: 10, lineHeight: 1.5 }}>A cinematic stream of work from the crews and artists you follow — coming as its own workflow.</div>
+      </div></div>
+    );
+  }
+
+  /* ---- the persistent Arsyen Bar (bare floating elements) ---- */
+  function BarInner({ flow, setFlow, appearance }) {
+    const [s, setS] = appearance;
+    const [open, setOpen] = React.useState(false);
+    const items = [["work", "folder"], ["discover", "compass"], ["feed", "feed"], ["tools", "grid"], ["settings", "settings"]];
+    return (
+      <div style={{ height: BAR_H, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 28px" }}>
+        <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 23, letterSpacing: "-.04em", color: "var(--fg1)" }}>arsyen</div>
+        <div style={{ display: "inline-flex", gap: 26, alignItems: "center" }}>
+          {items.map(([k, ic]) => {
+            const on = flow === k;
+            return (
+              <button key={k} onClick={() => setFlow(k)} aria-label={k} style={{ background: "none", border: "none", cursor: "pointer", padding: 4, display: "inline-flex", color: on ? "var(--accent)" : "var(--fg2)", transform: on ? "scale(1.24)" : "scale(1)", transformOrigin: "center bottom", transition: "transform .2s var(--ease-out), color .2s var(--ease-out)" }}
+                onMouseEnter={(e) => { if (!on) e.currentTarget.style.transform = "scale(1.12)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.transform = on ? "scale(1.24)" : "scale(1)"; }}>
+                <A name={ic} size={23} stroke={on ? 2 : 1.7} />
+              </button>
+            );
+          })}
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 14, position: "relative" }}>
+          <div className="ars-glass" style={{ display: "flex", alignItems: "center", gap: 10, height: 42, padding: "0 15px", borderRadius: "var(--radius-full)", minWidth: 250 }}>
+            <A name="search" size={16} color="var(--fg3)" /><span style={{ flex: 1, fontSize: 13.5, color: "var(--fg3)" }}>{SEARCH[flow]}</span>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 2, fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--fg3)" }}><A name="command" size={12} />K</span>
+          </div>
+          <button onClick={() => setOpen(!open)} aria-label="Appearance" style={{ width: 42, height: 42, borderRadius: "50%", background: open ? "var(--accent-soft)" : "transparent", border: "none", color: open ? "var(--accent)" : "var(--fg2)", cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", transition: "all .18s" }}><A name="sliders" size={20} /></button>
+          <button aria-label="Notifications" style={{ position: "relative", width: 42, height: 42, borderRadius: "50%", background: "transparent", border: "none", color: "var(--fg2)", cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center" }}><A name="bell" size={19} /><span style={{ position: "absolute", top: 9, right: 10, width: 7, height: 7, borderRadius: "50%", background: "var(--accent)" }} /></button>
+          <button onClick={() => setFlow("settings")} aria-label="Profile" style={{ padding: 0, border: "none", background: "none", cursor: "pointer" }}><window.AAvatar hue="verdant" size={38} /></button>
+          {open && <window.ArsAppearance.AppearancePopover s={s} setS={setS} onClose={() => setOpen(false)} />}
+        </div>
+      </div>
+    );
+  }
+
+  /* Fullscreen: dock hidden; hovering the bottom reveals it over a fade. */
+  function HoverBar(props) {
+    const [show, setShow] = React.useState(false);
+    return (
+      <React.Fragment>
+        <div onMouseEnter={() => setShow(true)} style={{ position: "fixed", left: 0, right: 0, bottom: 0, height: 22, zIndex: 140 }} />
+        <div onMouseLeave={() => setShow(false)} style={{ position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 150, transform: show ? "translateY(0)" : "translateY(105%)", transition: "transform var(--dur-slow) var(--ease-out)" }}>
+          <div style={{ paddingTop: 60, background: "linear-gradient(180deg, transparent, rgba(0,0,0,.55) 55%, rgba(0,0,0,.82))" }}>
+            <BarInner {...props} />
+          </div>
+        </div>
+      </React.Fragment>
+    );
+  }
+
+  function App() {
+    const appearance = window.ArsAppearance.useAppearance();
+    const [flow, setFlow] = React.useState("work");
+    const [fullscreen, setFullscreen] = React.useState(false);
+    const nav = (f) => { setFullscreen(false); setFlow(f); };
+    const fs = flow === "work" && fullscreen;
+
+    const Body = {
+      work: () => <WorkView fullscreen={fs} setFullscreen={setFullscreen} />,
+      discover: () => <div className="ars-scroll"><window.DiscoverView /></div>,
+      feed: () => <FeedView />,
+      tools: () => <div className="ars-scroll"><window.ToolsView /></div>,
+      settings: () => <div className="ars-scroll"><window.SettingsView /></div>,
+    }[flow];
+
+    return (
+      <React.Fragment>
+        <Wallpaper flow={flow} />
+        <div className="ars-shell">
+          <div className="ars-body ars-view" key={flow}>{Body()}</div>
+          {!fs && <BarInner flow={flow} setFlow={nav} appearance={appearance} />}
+        </div>
+        {fs && <HoverBar flow={flow} setFlow={nav} appearance={appearance} />}
+      </React.Fragment>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById("app")).render(<App />);
+</script>
+</body>
+</html>
