@@ -1,0 +1,25 @@
+/* ============================================================
+   ARSYEN — FONTS  (Apple foundation, themeable)
+   SF Pro is the foundation (renders natively on macOS / iOS).
+   Font is a user choice in Studio ▸ Appearance; this is the default.
+   Declared from the locally-installed system font via src: local()
+   so nothing is downloaded.
+   ============================================================ */
+
+@font-face { font-family: "SF Pro Display"; src: local("SF Pro Display"), local("SFProDisplay-Regular"), local(".SFNSDisplay"), local("-apple-system"); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "SF Pro Text"; src: local("SF Pro Text"), local("SFProText-Regular"), local(".SFNSText"), local("-apple-system"); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "SF Mono"; src: local("SF Mono"), local("SFMono-Regular"), local(".SFNSMono"), local("Menlo"); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "New York"; src: local("New York"), local("NewYork"), local(".NewYork"), local("Georgia"); font-weight: 100 900; font-style: normal; font-display: swap; }
+
+:root {
+  /* SF Pro Display — large titles, hero type, numerals */
+  --font-display: "SF Pro Display", -apple-system, system-ui, "Helvetica Neue", sans-serif;
+  /* SF Pro Text — body, UI, controls */
+  --font-text: "SF Pro Text", -apple-system, system-ui, "Helvetica Neue", sans-serif;
+  /* condensed/display alias */
+  --font-compact: "SF Pro Display", -apple-system, system-ui, sans-serif;
+  /* SF Mono — meta, kbd, IDs, code, numerals */
+  --font-mono: "SF Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  /* New York — editorial serif accent (Canvas storytelling, quotes) */
+  --font-serif: "New York", ui-serif, Georgia, serif;
+}

@@ -1,0 +1,123 @@
+/* ============================================================
+   ARSYEN — BASE, LIVING WALLPAPER & GLASS  (Liquid Glass)
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-text);
+  font-size: var(--text-body-md);
+  line-height: var(--leading-normal);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection { background: var(--accent-soft-hover); color: var(--text-primary); }
+
+* { scrollbar-width: thin; scrollbar-color: var(--surface-4) transparent; }
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb { background: var(--surface-4); border-radius: var(--radius-full); border: 3px solid transparent; background-clip: content-box; }
+*::-webkit-scrollbar-thumb:hover { background: var(--surface-5); background-clip: content-box; }
+
+.ars-tnum { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+/* ============================================================
+   THE LIVING WALLPAPER
+   One persistent field of large, soft, slowly-drifting colour
+   blobs on black. Built once behind everything (z:0); the content
+   layer floats above. Each view sets its own blob palette so the
+   ambient colour shifts as you move — motion stays continuous.
+   Default is black-dominant: blobs glow faintly.
+   ============================================================ */
+.ars-wall {
+  position: fixed; inset: 0; z-index: 0;
+  background: var(--bg);
+  overflow: hidden;
+  /* default palette (coral-led) */
+  --b1: #ff555d; --b2: #8a5cff; --b3: #d83b8e; --b4: #3f6fd6; --b5: #e8843a;
+}
+.ars-wall__b {
+  position: absolute; border-radius: 50%;
+  filter: blur(80px); opacity: 0; mix-blend-mode: screen;
+  will-change: transform, opacity;
+  transition: opacity var(--dur-slow) var(--ease-out);
+}
+.ars-wall__b:nth-child(1) { width: 60vw; height: 60vw; left: -12vw; top: -14vw;  background: radial-gradient(circle at 50% 50%, var(--b1), transparent 66%); animation: ars-drift-a 58s var(--ease-in-out) infinite alternate; }
+.ars-wall__b:nth-child(2) { width: 52vw; height: 52vw; right: -10vw; top: -8vw;   background: radial-gradient(circle at 50% 50%, var(--b2), transparent 66%); animation: ars-drift-b 67s var(--ease-in-out) infinite alternate; }
+.ars-wall__b:nth-child(3) { width: 48vw; height: 48vw; left: 28vw;  bottom: -16vw; background: radial-gradient(circle at 50% 50%, var(--b3), transparent 66%); animation: ars-drift-c 73s var(--ease-in-out) infinite alternate; }
+.ars-wall__b:nth-child(4) { width: 44vw; height: 44vw; right: 4vw;  bottom: -12vw; background: radial-gradient(circle at 50% 50%, var(--b4), transparent 66%); animation: ars-drift-d 61s var(--ease-in-out) infinite alternate; }
+.ars-wall__b:nth-child(5) { width: 36vw; height: 36vw; left: 36vw;  top: 18vh;    background: radial-gradient(circle at 50% 50%, var(--b5), transparent 66%); animation: ars-drift-e 80s var(--ease-in-out) infinite alternate; }
+
+/* Default backdrop is PURE BLACK — blobs hidden. The colored "Living"
+   field is opt-in (Studio ▸ Appearance ▸ Backdrop). */
+[data-backdrop="living"] .ars-wall__b { opacity: 0.40; }
+[data-backdrop="living"] .ars-wall__b:nth-child(5) { opacity: 0.30; }
+[data-theme="light"][data-backdrop="living"] .ars-wall__b { opacity: 0.16; mix-blend-mode: multiply; }
+
+@keyframes ars-drift-a { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(7vw,6vh,0) scale(1.08); } }
+@keyframes ars-drift-b { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(-6vw,8vh,0) scale(1.12); } }
+@keyframes ars-drift-c { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(8vw,-7vh,0) scale(1.06); } }
+@keyframes ars-drift-d { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(-7vw,-6vh,0) scale(1.1); } }
+@keyframes ars-drift-e { from { transform: translate3d(0,0,0) scale(1); } to { transform: translate3d(5vw,9vh,0) scale(1.14); } }
+
+/* Per-view palettes are applied by the app via inline --b1…--b5 on
+   .ars-wall (see each kit's Wallpaper component) so the field re-tints
+   per view without reloading. Defaults above are coral-led (Projects). */
+
+@media (prefers-reduced-motion: reduce) {
+  .ars-wall__b { animation: none !important; }
+}
+
+/* ---- Ambient & interaction motion ---- */
+@keyframes ars-detail-in { from { transform: translateX(18px); } to { transform: translateX(0); } }
+@keyframes ars-pop-in { from { opacity: 0.4; transform: translateY(8px) scale(0.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+/* very slow surface "breathing" — premium, nearly subconscious */
+@keyframes ars-breathe { 0%, 100% { opacity: 1; } 50% { opacity: 0.985; } }
+.ars-breathe { animation: ars-breathe 9s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .ars-breathe, .ars-detail-in, .ars-pop-in { animation: none !important; } }
+
+/* Auth funnel sits directly on the wallpaper — full-bleed living field. */
+.ars-backdrop-living {
+  position: relative; background-color: #0a0509;
+  background-image:
+    radial-gradient(42% 48% at 30% 38%, rgba(255,85,93,0.5), transparent 64%),
+    radial-gradient(48% 54% at 72% 64%, rgba(138,92,255,0.42), transparent 66%),
+    radial-gradient(38% 44% at 86% 22%, rgba(232,132,58,0.3), transparent 62%),
+    radial-gradient(60% 60% at 50% 116%, rgba(16,10,28,0.85), transparent 60%);
+}
+
+/* ============================================================
+   CLEAR FROSTED GLASS — matte, black-dominant panes.
+   Read by sheen + top hairline + 1px border + deep shadow + blur,
+   NOT by a heavy fill. Never glossy.
+   ============================================================ */
+.ars-glass {
+  position: relative;
+  background: var(--glass-fill);
+  backdrop-filter: blur(var(--glass-blur)) saturate(135%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(135%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--edge-light), var(--shadow-panel);
+}
+.ars-glass::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,0.05), transparent 42%, rgba(0,0,0,0.10));
+}
+.ars-glass--float { box-shadow: var(--edge-light), var(--shadow-float); }
+.ars-glass--strong { background: var(--glass-fill-strong); }
+
+/* ============================================================
+   COVER-ART PLACEHOLDERS — soft colour gradients (never grey).
+   Used where real imagery isn't supplied: project covers,
+   portfolio works, artist-card backdrops, avatar fallbacks.
+   ============================================================ */
+.ars-mesh { position: relative; background-color: #0a0a0c; overflow: hidden; isolation: isolate; }
+.ars-mesh--coral   { background-image: radial-gradient(60% 70% at 24% 30%, rgba(255,85,93,0.85), transparent 64%), radial-gradient(55% 65% at 82% 26%, rgba(216,59,142,0.7), transparent 66%), radial-gradient(80% 80% at 64% 100%, rgba(80,24,46,0.7), transparent 64%); }
+.ars-mesh--ember   { background-image: radial-gradient(60% 70% at 30% 32%, rgba(232,132,58,0.82), transparent 62%), radial-gradient(55% 65% at 80% 26%, rgba(200,52,42,0.66), transparent 66%), radial-gradient(85% 85% at 58% 100%, rgba(48,18,14,0.78), transparent 62%); }
+.ars-mesh--violet  { background-image: radial-gradient(58% 70% at 28% 32%, rgba(138,92,255,0.8), transparent 62%), radial-gradient(55% 62% at 82% 30%, rgba(216,59,142,0.6), transparent 66%), radial-gradient(80% 82% at 62% 100%, rgba(40,28,72,0.78), transparent 62%); }
+.ars-mesh--azure   { background-image: radial-gradient(58% 70% at 50% 18%, rgba(91,157,255,0.82), transparent 60%), radial-gradient(60% 62% at 84% 62%, rgba(52,84,170,0.52), transparent 66%), radial-gradient(82% 82% at 28% 100%, rgba(16,26,54,0.78), transparent 62%); }
+.ars-mesh--verdant { background-image: radial-gradient(58% 72% at 30% 70%, rgba(58,191,122,0.7), transparent 62%), radial-gradient(55% 62% at 80% 36%, rgba(208,180,72,0.58), transparent 66%), radial-gradient(82% 82% at 56% 100%, rgba(14,40,30,0.8), transparent 62%); }

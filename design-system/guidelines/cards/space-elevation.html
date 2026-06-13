@@ -1,0 +1,28 @@
+<!-- @dsCard group="Spacing" viewport="700x220" name="Elevation & glow" subtitle="Dark drops lift panels; the coral halo marks every CTA" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; background: var(--bg-canvas); padding: 30px; }
+  .grid { display: flex; gap: 22px; flex-wrap: wrap; align-items: center; }
+  .sw { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .box { width: 110px; height: 70px; background: var(--surface-2);
+    border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); }
+  .meta { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-muted); }
+  .cta { width: 130px; height: 44px; background: var(--accent); border-radius: var(--radius-md);
+    box-shadow: var(--glow-accent); display: flex; align-items: center; justify-content: center;
+    color: var(--on-accent); font-family: var(--font-text); font-weight: 600; font-size: 14px; }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="sw"><div class="box" style="box-shadow: var(--shadow-sm);"></div><div class="meta">shadow-sm</div></div>
+    <div class="sw"><div class="box" style="box-shadow: var(--shadow-md);"></div><div class="meta">shadow-md</div></div>
+    <div class="sw"><div class="box" style="box-shadow: var(--shadow-lg);"></div><div class="meta">shadow-lg</div></div>
+    <div class="sw"><div class="box" style="box-shadow: var(--edge-light), var(--shadow-md);"></div><div class="meta">+ edge-light</div></div>
+    <div class="sw"><div class="cta">Message</div><div class="meta">glow-accent</div></div>
+  </div>
+</body>
+</html>
