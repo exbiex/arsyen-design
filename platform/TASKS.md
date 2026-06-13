@@ -58,12 +58,20 @@ Treat POC code as a ~4/10 baseline to **evolve**, not rewrite.
 - [x] **B1 Token port.** Colors (pure-black base, surface ramp, overlays/borders), type
   (SF Pro Display/Text, SF Mono, New York serif), accents → `theme/tokens.dart`,
   `theme/app_theme.dart`, `liquid/liquid_tokens.dart`. `flutter analyze` clean.
-- [ ] **B2 Primitive parity.** Reconcile Flutter `glass.dart`/`controls.dart` with the kit's
-  `components/` (Button, IconButton, Input, Switch, SegmentedControl, Tabs, FilterChip,
-  Avatar, Badge, StatusPill, ProgressMeter, Tag). Fill gaps; keep one implementation each.
-  **Acceptance:** each kit primitive has a 1:1 Flutter equivalent using the new tokens.
-- [ ] **B3 Specimen screen.** A `/design` debug route rendering every primitive + type/colour
-  ramps (mirror `guidelines/cards/`). **Acceptance:** visual diff vs the kit is faithful.
+- [x] **B2 Primitive parity.** Done 2026-06-14. New `features/liquid/primitives.dart` adds the
+  kit-parity set (prefixed `A` to dodge Material name clashes): `AIconButton · ATag · AStatusPill
+  · ABadge · AAvatar · AProgressMeter · AInput · ASwitch · AFilterChip · ACard`. Button unified:
+  `GlassButton` (variants primary/secondary/ghost/outline/danger × sizes sm/md/lg, icon/iconRight/
+  glow/fullWidth/busy) with **`CoralButton` now delegating to it** (one implementation; API kept).
+  `GlassSegmented` gained a **`chips`** mode (covers kit `SegmentedControl(chips)` + `Tabs`). Added
+  a shared **`Pressable`** (hover+press+scale) to `controls.dart` so new primitives don't re-roll it.
+  All palette-backed (re-colour live across Pure-Black/Dark/Light); `flutter analyze` clean.
+  **Parity note (eyeball):** primary-button text is now near-black `on-coral #1a0608` per the design
+  law (was white) — confirm or flip back.
+- [x] **B3 Specimen screen.** Done 2026-06-14. `features/liquid/views/design_view.dart` + `/design`
+  route (always reachable; `--dart-define=DESIGN=true` boots straight in, no backend). Self-contained
+  screen with a live Pure-Black/Dark/Light switch rendering every primitive + the type ramp. Verified:
+  macOS app builds, launches, renders with zero runtime exceptions.
 - [x] **B4 Font fidelity (macOS).** SF Pro Display/Text, SF Mono, New York wired in `AType`
   and render natively in the Mac build (web falls back — expected).
 - [x] **B5 Theme layer — Light / Dark / Pure-Black.** Done 2026-06-13. `AColors`/`AType` are now
