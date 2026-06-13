@@ -492,29 +492,34 @@ The backlog. Work from here using **the protocol in `CLAUDE.md §2`**. Tasks are
 ## PHASE 7 — Knowledge graph
 
 ### T-090 · Graph tables + indexes
-- **Status:** TODO · **Depends on:** T-031 · **References:** AR §7.1, DC §6
+- **Status:** DONE · **Depends on:** T-031 · **References:** AR §7.1, DC §6
 - **Scope:** migration for `entities` (incl. `embedding vector`), `entity_aliases`, `entity_relationships`, `entity_sources`; GIN on `data`, HNSW on `embedding`, relationship indexes.
 - **Acceptance:** tables + indexes per AR §7.1.
+- ✓ 2026-06-14 — `db/schema/knowledge-graph.ts` + migration `0008_glorious_the_fallen.sql`: `entities` (ent_; entityType/name/slug-unique/`data` jsonb/`embedding` vector(3072)/**`canonical_entity_id` redirect** for merges — DC §6/Invariant 6) + `entity_aliases` (name→entity resolution; unique (entity, alias_key)) + `entity_relationships` (directed edges; **unique (from, type, to)** = idempotent re-confirm) + `entity_sources` (provenance — every fact traces to a document). Indexes: slug-unique, entityType, canonical-redirect, **GIN on `data`**, alias-key, edge-unique, provenance; **HNSW `halfvec(3072)` expression index** hand-appended (drizzle-kit can't model expression indexes; the T-070 precedent — the migration wasn't applied yet, so allowed under Invariant 11). New prefixes `ealias_`/`erel_`/`esrc_` extend DOMAIN_MODEL §2 (flagged). typecheck + Biome clean; database.test.ts T-090 case green (4 tables, all indexes, halfvec NN search returns the right entity, edge-uniqueness rejects a dupe, canonical redirect round-trips).
 
 ### T-091 · Knowledge-graph module
-- **Status:** TODO · **Depends on:** T-090 · **References:** DC §6, AR §7.1, Invariant 7
+- **Status:** DONE · **Depends on:** T-090 · **References:** DC §6, AR §7.1, Invariant 7
 - **Scope:** entity CRUD, alias resolution, relationship edges; depends on nothing (Invariant 7).
 - **Acceptance:** entities/relationships can be created and queried; module has no inbound domain dependencies.
+- ✓ 2026-06-14 — `modules/knowledge-graph/`: `KnowledgeGraphRepository` (PRIVATE — the only code touching the four graph tables, EG §3) + `KnowledgeGraphService` (the module's ONLY export; **imports NOTHING domain-side, Invariant 7**): `createEntity` (slugify → `uniqueSlug` → auto-alias the name → optional provenance row), `getEntity`/`getEntityBySlug`/`resolveByName` (all follow the `canonical_entity_id` redirect, cycle-capped 8 hops — a merged entity's old id/slug/name still resolves to the survivor, DC §6), `addAlias`, `addRelationship` (idempotent on (from,type,to)), `relationshipsFor`, `addSource`, `mergeInto` (loser→winner: alias + provenance move + redirect). Typed `EntityNotFound`. 4 integration tests (real PG): create+slug+alias resolution+provenance, idempotent edges, name dedupe, canonical-redirect merge keeps old refs resolving.
 
 ### T-092 · Extraction → KG reconciliation (human-confirm)
-- **Status:** TODO · **Depends on:** T-081, T-091 · **References:** DC §6, Invariant 6
+- **Status:** DONE · **Depends on:** T-081, T-091 · **References:** DC §6, Invariant 6
 - **Scope:** a human-confirm flow that merges staged proposals into the graph; dedupe/merge behind `canonical_entity_id` redirects; attach provenance.
 - **Acceptance:** confirming a proposal creates/merges entities with provenance; redirects keep old references valid.
+- ✓ 2026-06-14 — `modules/ai-orchestration/reconciliation.service.ts` `confirmDocument(documentId, actor)`: **human-only by construction** (typed `ConfirmationForbidden` if `actorKind(actor) !== "human"` — Invariant 6: extraction PROPOSES, a human CONFIRMS). Per staged entity proposal → `resolveByName` (reuse the existing canonical: add the alias + a provenance source) else `createEntity` (with provenance); per staged relationship proposal → resolve both endpoints to entities → `addRelationship` (idempotent), deferring edges whose endpoints aren't both confirmed; marks proposals `confirmed`; returns `{entitiesCreated, entitiesReused, relationshipsCreated, relationshipsDeferred}`. Wired into `/admin` as `POST documents/:id/confirm-extraction`. Extraction repo gained `pendingEntities`/`pendingRelationships` + status setters. 3 integration tests (real PG, `seedDoc` FK): create-new, reuse-by-name with provenance appended, idempotent re-confirm + endpoint-missing edge deferral.
 
 ### T-093 · Reference snapshot resolution + entity API
-- **Status:** TODO · **Depends on:** T-036, T-091 · **References:** DC §9, Invariant 3, AR §11
+- **Status:** DONE · **Depends on:** T-036, T-091 · **References:** DC §9, Invariant 3, AR §11
 - **Scope:** replace the T-036 reference stub: resolve `references[].snapshot` from the graph at publish; add `GET /v1/entities/:slug` (optional deep-link target).
 - **Acceptance:** published reference cards render from embedded snapshots; the entity endpoint serves canonical data.
+- ✓ 2026-06-14 — `publishing/resolve.ts` reference seam made real: `resolveSnapshots(doc, {assets, entities})` now also runs `resolveReferences` — every reference carrying a canonical `entityId` is refreshed from the graph (`KnowledgeGraphService.snapshot()` → CURRENT canonical render data, following the merge redirect), so the published card is **self-contained, no second call (Invariant 3)**; a reference whose entity the graph doesn't hold (not yet human-confirmed, DC §6) keeps its authoring-time snapshot. PublishingService now depends on Content + Assets + **KG** (Invariant 7; PublishingModule imports KnowledgeGraphModule) and re-validates the resolved envelope before hashing. `GET /v1/entities/:slug` (`KnowledgeGraphController`) serves canonical `{id, slug, entityType, name, data}`, redirect-following, **never leaking embedding/canonical pointer**; `EntityNotFound` → 404 via the domain filter. 5 e2e (real app/PG): stale snapshot replaced by canonical at publish, unconfirmed reference passes through, entity endpoint serves canonical with no internal columns, merge redirect served by old slug, 404 envelope. (Two PublishingService-constructing suites got the 4th `entities` arg.)
 
 ### T-094 · Graph traversal queries
-- **Status:** TODO · **Depends on:** T-091 · **References:** AR §7.1, DC §6
+- **Status:** DONE · **Depends on:** T-091 · **References:** AR §7.1, DC §6
 - **Scope:** recursive-CTE traversal ("related entities within N hops"); a "related articles/entities" query usable by consumers.
 - **Acceptance:** traversal returns correct multi-hop results. **Phase 7 exit met.**
+- ✓ 2026-06-14 — `KnowledgeGraphRepository.relatedWithin(startId, maxHops, limit)`: a `WITH RECURSIVE` walk over the **UNDIRECTED** edge graph (an edge relates both ways via a `CASE` on from/to; uses the existing from/to indexes), a per-row `path` array blocks revisiting a node within a path → **terminates on cycles**, `MIN(hop)` returns each reachable entity at its SHORTEST distance, nearest first, start excluded. `KnowledgeGraphService.relatedEntities(id, {maxHops, limit})` starts at the canonical survivor, resolves every hit through the redirect and **dedupes by canonical id** (a merged pair surfaces once), clamps hops to [1,5]/limit to [1,100] (an unbounded deep/dense walk is the Phase-9 AGE trigger, T-904). Consumer surface `GET /v1/entities/:slug/related?hops=&limit=` → `{items:[{id,slug,entityType,name,hop}]}`. 5 traversal integration tests (shortest-hop, undirected inbound+outbound, hop bound, cycle+self-exclusion, merge dedupe, island/unknown) + 2 endpoint e2e. **Full platform suite green: 42 files / 171 tests. Phase 7 (T-090…T-094) complete.**
 
 ---
 
