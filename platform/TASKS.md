@@ -93,8 +93,14 @@ Treat POC code as a ~4/10 baseline to **evolve**, not rewrite.
 - [x] **C3 Object views = not pages.** Project shows Overview / Board / Action Plans / Files /
   Activity as in-workspace view tabs (Board/Plans/Files reuse the live controllers; Overview =
   stats + Canvas teaser; Activity = placeholder). *(Settings tab + richer Overview/Activity TODO.)*
-- [~] **C4 Synchronized selection.** Board opens its ticket detail in-context (reuses `BoardView`).
-  *(TODO: the kit's 340px inline detail beside the board + cross-view task focus from Plans.)*
+- [x] **C4 Synchronized selection.** Done 2026-06-14. Focused ticket lifted to a shared
+  `boardSelectionProvider` (Riverpod `Notifier.family` by project). The ticket detail now opens in
+  the kit's **340px rail beside the board** (both normal + fullscreen; rail scrolls internally;
+  board area flexes), replacing the below/floating presentations. **Cross-view focus:** tapping a
+  ticket in **Action Plans** sets the shared selection + switches to the Board, where it opens in
+  the rail. Stale-selection guard (rail only opens for a ticket that still exists). `flutter
+  analyze` clean; full app builds + launches with zero exceptions. *(Create form still floats /
+  inline-below — its fields are wider than 340.)*
 - [x] **C5 Fullscreen as state.** Focus toggle in the action bar slides the rail away + widens
   the workspace via `AnimatedPositioned` (shell-owned `immersive` notifier); changing tab exits.
   *(Polish: center/cap workspace width in focus per the kit.)*
