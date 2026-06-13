@@ -6,11 +6,11 @@
 > design law in [`DESIGN_LANGUAGE.md`](./DESIGN_LANGUAGE.md). Updated 2026-06-14.
 
 ## Priority order (when in doubt, build in this order)
-1. **Platform — macOS** (the locked primary target; the user-facing Creative-OS).
+1. **Platform — macOS** (the only client; the user-facing Creative-OS). **Web is dropped (2026-06-14)** —
+   no web client app; "start the app" = macOS only. iOS later (keep code iOS-ready).
 2. **Canvas — schema-first read path** (the contract every other plane depends on).
 3. **Research — finish the editorial pipeline** (it's the furthest along; keep its momentum).
 4. **Generative — contract + stub only** (real AI is Phase 3; don't pull it forward).
-5. **Platform — Web (limited)** after the macOS feature set + Canvas read path.
 
 ## Cross-repo quality bar (every task, every repo)
 Code + tests green in CI · migrations up/down clean · authz + validation + audit on mutations ·
@@ -43,8 +43,7 @@ no N+1 · update the relevant `context/*` doc in the same change.
 **Platform** (`platform/TASKS.md`): **B2** primitive parity · **B3** specimen route · **C4**
 inline task detail + cross-view focus · **C3** leftovers (Settings tab, live Overview/Activity) ·
 **C6** backend deltas for new Work categories (Notes/Ideas/References) · **A4/A5** native chrome +
-icon · **A6** distribution (needs paid Apple Dev) · **D1–D3** web shell + limited surfaces +
-public publishing routes.
+icon · **A6** distribution (needs paid Apple Dev). *(WS-D web — dropped.)*
 **Canvas** (`canvas/TASKS.md`): **E1** scaffold · **E2** `canvas-schema` · **E3** renderer ·
 **E4** publishing MVP · **E5** render decision (gating).
 **Generative** (`generative/TASKS.md`): **G1** Intent-Patch contract · **G2** stub producer.

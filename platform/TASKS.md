@@ -18,9 +18,10 @@
   brand-accurate per `DESIGN_LANGUAGE.md`; reuse `liquid/controls.dart` + `glass.dart`
   (re-rolling shared controls is a reject); no N+1 (`ENGINEERING.md`).
 
-## Primary target
-**macOS desktop (Flutter) — complete features, FIRST.** Web = limited companion (React kit).
-iOS = later (keep code iOS-ready). Build/verify on macOS; web on Chrome `--web-port=8081`.
+## Primary target — macOS only (decision 2026-06-14)
+**macOS desktop (Flutter) is THE client — complete features.** iOS = later (keep code iOS-ready).
+**Web is DROPPED** — no web client app, no Flutter web preview as a run target. Build/verify on
+macOS. "Start the app" = `flutter run -d macos`, nothing else.
 
 ---
 
@@ -92,13 +93,12 @@ Treat POC code as a ~4/10 baseline to **evolve**, not rewrite.
 - [ ] **C6 Backend deltas.** Any schema/endpoint changes for Notes/Ideas/References etc. as
   they come online (migrations + Go module + tests). **Acceptance:** new categories CRUD live.
 
-## WS-D — Web app (limited)  — ref `design-system/ui_kits/web/`
-- [ ] **D1 Web shell from the React kit.** Stand up the web app on the design-system kit
-  (`styles.css` + `tokens/` + `components/`). **Acceptance:** auth + shell render on-brand.
-- [ ] **D2 Limited surfaces.** Profile/portfolio view, published Canvas view, light Work read,
-  auth/invite. Defer heavy creation to macOS. **Acceptance:** the limited set works against `:8080`.
-- [ ] **D3 Public publishing routes.** `/username`, `/username/me`, `/username/<slug>`
-  (aligns with Canvas publishing). **Acceptance:** a published page renders for anon users.
+## WS-D — Web app — ❌ DROPPED (2026-06-14)
+The web client/companion is **no longer built**; the app ships on macOS (+ iOS later) only.
+Public-web *publishing* of creative work (D3 / `/username/<slug>`, the Next.js SEO surface in
+`context/SUPERARCHITECTURE.md §8b`, and Canvas's `publishing-engine`) is **deferred, not deleted** —
+the design `ui_kits/web/` and the Next `web/` dir stay as reference. Revive only if the founder does.
+- ~~D1 Web shell from the React kit~~ · ~~D2 Limited surfaces~~ · ~~D3 Public publishing routes~~ — dropped.
 
 ## WS-E — Canvas engine bootstrap (schema-first)  — repo `arsyen-canvas-engine`, ref its `context/*` + `CLAUDE.md`
 - [ ] **E1 Monorepo scaffold.** pnpm 11 / turbo / biome / TS, `apps/*`+`packages/*` (match
