@@ -9,16 +9,16 @@
 
 ---
 
-## Platform strategy & phasing (surfaces)
+## Platform strategy & phasing (surfaces) — **macOS only (decision 2026-06-14)**
 
-| Surface | Phase-1 scope | Why |
+| Surface | Scope | Why |
 |---|---|---|
-| **macOS app** | **COMPLETE feature set — build FIRST** | The primary creation environment; the Creative-OS experience is desktop-native. |
-| **Web app** | **Limited** | Public reach, sharing, published Canvas/portfolios, light Work access. Built from the React design-system kit. |
-| **iOS app** | **Later** | Companion/consumption first, full creation later. Architected for now, implemented after macOS ships. |
+| **macOS app** | **THE client — complete feature set, build FIRST** | The primary creation environment; the Creative-OS experience is desktop-native. |
+| **iOS app** | **Later** | Companion/consumption first, full creation later. **Code kept iOS-ready**; built only after macOS, when the founder green-lights it. |
+| ~~**Web app**~~ | **DROPPED** | The web client/companion is no longer built. Public-web *publishing* of creative work (portfolios as published Canvas) is **deferred, not deleted** — revisit only if revived. |
 
-**Rule:** macOS is the lead target; web is the trimmed companion; iOS is deferred but the
-Flutter codebase stays iOS-ready.
+**Rule:** macOS is the only active client target. iOS stays ready (don't design it out). **No web
+client.** "Start the app" = the macOS app only.
 
 ## Plane states at a glance (2026-06-14)
 
@@ -44,16 +44,16 @@ Flutter codebase stays iOS-ready.
   everything depends on.
 - ▶ **Resolve the gating decisions** in `ECOSYSTEM.md §5` before they block later phases.
 
-### Phase 1 — macOS (complete) + Web (limited) + Work + Canvas read-path
-Two platform tracks in parallel plus the Canvas read-path:
+### Phase 1 — macOS (complete) + Work + Canvas read-path
 - **macOS app:** finish the native shell (window chrome, entitlements, packaging),
   complete-feature parity with the design-system Mac UI kit.
 - **Work workflow:** Projects→Work — object-selector left panel, persistent workspace,
   Overview/Board/Action-Plans/Files/Activity/Settings as views of one object, synchronized task
   selection, fullscreen as a workspace state.
-- **Web app (limited):** ship the React design-system kit as the public/companion surface.
+- ~~Web app (limited)~~ — **dropped (2026-06-14).**
 - **Canvas read-path:** `canvas-renderer` renders a hand-authored schema to a vertical-scroll
-  experience; `publishing-engine` serves `/username/<slug>`.
+  experience; `publishing-engine` serves `/username/<slug>` *(public publishing of output is
+  **deferred** while web is paused; the engine is still built schema-first)*.
 - **Generative:** define + stub the **Intent-Patch** interface (no real AI yet).
 - **Research:** finish the editorial pipeline (Phase 6 — extraction, verification, atomization,
   topic discovery, full Flow).

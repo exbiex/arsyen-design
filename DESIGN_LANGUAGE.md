@@ -1,7 +1,8 @@
 # Arsyen — Design Language (the one canonical law)
 
-> The single written contract for Arsyen's look, feel, and motion across **every** surface
-> (macOS · iOS · Web) and **every** plane (Platform shell · Canvas experiences). The
+> The single written contract for Arsyen's look, feel, and motion across the shipping surfaces
+> (**macOS** primary · **iOS** later — web client is dropped) and **every** plane (Platform shell ·
+> Canvas experiences). The design-system `ui_kits/web/` stays as visual reference only. The
 > machine-readable source is **[`design-system/`](./design-system/)** (CSS tokens + React
 > components + Mac/Web/iPhone UI kits). **When this doc and the kit disagree, the kit's
 > `tokens/*.css` win — then update this doc.** Long-form philosophy lives in
