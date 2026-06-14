@@ -76,17 +76,28 @@ motion-engine · template-engine · publishing-engine · ingestion-engine`.
 
 ---
 
-## PHASE 2 — Authoring & templates
-- **E6 · `canvas-editor`** — canvas-first editing; tools appear contextually; fullscreen focus;
-  layers + inspector as on-demand surfaces; editing modes Template / Blank / AI / BYOD / Hybrid.
-  Ref `context/08_CANVAS_EDITOR_MODEL.md`.
-- **E7 · `template-engine` + first Experience Templates** — Template = Creator Domain + Content
+## PHASE 2 — Authoring & templates  ✅ COMPLETE (2026-06-14)
+
+> Decisions: editor data = localStorage + JSON import/export; templates = all 5 domains; E9 = full
+> cross-repo. New packages `component-system` + `canvas-bridge`; new apps `editor` + `embed`.
+> Canvas repo `build · typecheck · lint · test` green; platform macOS app **builds + codesigns** with
+> the WebView host; `go build` clean.
+
+- **E6 · `canvas-editor`** — [x] done. Canvas-first editing through **typed, invertible commands
+  (undo/redo)** — the same apply path AI Intent-Patches will use (E10). Layers + palette + inspector
+  + live click-to-select preview; localStorage autosave + JSON import/export; `apps/editor`. AI + BYOD
+  modes stubbed (Phase 3). Ref `context/08_CANVAS_EDITOR_MODEL.md`.
+- **E7 · `template-engine` + Experience Templates** — [x] done. Template = Creator Domain + Content
   Model + Structure + Presentation + Motion; lifecycle Template → Canvas Instance → Detached
-  Canvas; ship Filmmaker + Designer portfolio templates. Ref `09_CANVAS_TEMPLATE_SYSTEM.md`.
-- **E8 · `component-system`** — atomic + composite components; user components (save / reuse /
-  version). Ref `10_CANVAS_COMPONENT_SYSTEM.md`.
-- **E9 · Platform embed** — Canvas as **Work ▸ Project ▸ Canvas**; **Profile/Portfolio = a
-  published Canvas**; wire asset refs to the platform Go/S3 store (`../ECOSYSTEM.md §3 Assets`).
+  (`meta.templateRef`). Ships **all 5 domains** (Filmmaker / Designer / Writer / Musician / Studio).
+  Ref `09_CANVAS_TEMPLATE_SYSTEM.md`.
+- **E8 · `component-system`** — [x] done. Atomic + composite (preset-section) components; user
+  components (save / reuse / version) with id re-mapping. Ref `10_CANVAS_COMPONENT_SYSTEM.md`.
+- **E9 · Platform embed** — [x] done (**full cross-repo**). `@arsyen/canvas-bridge` (host↔canvas
+  protocol) + `apps/embed` (WebView bundle, asset-resolver seam) on the canvas side; on the platform
+  side a Flutter **WKWebView host** (`flutter_inappwebview`) wired into **Work ▸ Project ▸ Canvas**
+  (route `/canvas`, entry in the Work view) that resolves asset refs via the existing **Go signed-URL
+  asset API (F2, reused)**. Profile-as-published-Canvas reuses the same surface. Ref `06` + `../ECOSYSTEM.md §3/§5`.
 
 ## PHASE 3 — Intelligence & ingestion
 - **E10 · Intent-Patch application** — apply a mutation plan from the Generative plane to the
@@ -108,7 +119,12 @@ motion-engine · template-engine · publishing-engine · ingestion-engine`.
 ---
 
 ## Immediate next
-Phase 1 (E1–E5) is **complete**. Next is **Phase 2 → E6 `canvas-editor`** (canvas-first authoring,
-mutating the graph through the same `@arsyen/canvas-schema` contract). E9 (platform embed) will build
-the Flutter ↔ WebView bridge per the E5 decision. Run locally: `pnpm playground` (renderer) ·
-`pnpm publish:dev` → http://localhost:3210/aurelia/aurelia-reel (publishing).
+Phases 1 + 2 (E1–E9) are **complete**. Next is **Phase 3 → E10 Intent-Patch application** (apply a
+mutation plan from the Generative plane to the graph; AI redesigns auto-branch; AI never mutates
+directly) — it needs Generative **G1** (the Intent-Patch contract). Then E11 ingestion (BYOD) · E12
+versioning · E13 full motion/design packs.
+
+Run locally (canvas repo): `pnpm playground` (renderer, :3200) · `pnpm --filter @arsyen/editor-app dev`
+(editor, :3201) · `pnpm --filter @arsyen/embed-app dev` (embed, :3202) · `pnpm publish:dev`
+(publishing, :3210). In-app Canvas: run the embed dev server, then the macOS app (Work ▸ Project ▸ the
+Canvas chip → `/canvas`).

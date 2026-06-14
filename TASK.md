@@ -25,7 +25,7 @@ no N+1 · update the relevant `context/*` doc in the same change.
 | Repo | Next task | What it is | Backlog |
 |---|---|---|---|
 | **Platform** | **Breadth — port Discover / Tools / Studio / Profile** onto the B-series kit | The remaining views still run on old styling/sample data; bring them onto the shared primitives. *(Done since: B2/B3 parity, C4/C5 detail rail, **A4/A5** native chrome + identity, **C3** Settings + live Activity, **C6** the `work` module — Notes/Ideas/References CRUD. A6 distribution blocked on a paid Apple Dev account.)* | [`platform/TASKS.md`](./platform/TASKS.md) |
-| **Canvas** | **E6 — `canvas-editor`** | **Phase 1 (E1–E5) ✅ complete (2026-06-14)** — schema-first read path built & green: `@arsyen/canvas-schema`, React `canvas-renderer` + `motion-engine`, `publishing-engine`; render-in-app = **WebView-embed** (E5). Next: Phase 2 authoring (E6). | [`canvas/TASKS.md`](./canvas/TASKS.md) |
+| **Canvas** | **E10 — Intent-Patch application** (needs Generative G1) | **Phases 1 + 2 (E1–E9) ✅ complete (2026-06-14).** P1 read path + P2 authoring/embed: `canvas-editor` (typed invertible commands + undo/redo), `template-engine` (5 domains), `component-system`, `@arsyen/canvas-bridge` + `apps/embed`, and the Flutter **WKWebView host** (Work ▸ Project ▸ Canvas) resolving assets via the reused Go signed-URL API. Next: P3 → **E10** apply Generative Intent-Patches (auto-branch). | [`canvas/TASKS.md`](./canvas/TASKS.md) |
 | **Research** | **— none scheduled (Phases 0–8 ✅ COMPLETE, T-001…T-104)** | The editorial producer is **feature-complete**: content contract, AI pipeline, knowledge graph, real auth, OpenAPI spec, observability hardening, consumer onboarding, and **deploy** (one platform image + prod migrator + GHCR CI; managed + self-host paths; a published doc verified reachable via `/v1` from the built image). Phase 9+ (T-900…T-906) is **trigger-based only**. | [`research/TASKS.md`](./research/TASKS.md) |
 | **Generative** | **G1 — Intent-Patch contract** (Canvas E2 ✅ shipped — `@arsyen/canvas-schema`) | Define the versioned Intent-Patch Zod contract, then **G2** stub the producer so Canvas can wire the seam with no AI. | [`generative/TASKS.md`](./generative/TASKS.md) |
 
@@ -52,11 +52,13 @@ icon · **A6** distribution (needs paid Apple Dev). *(WS-D web — dropped.)*
 **Cross-repo** (`platform/TASKS.md` WS-F): **F1** contract home · **F2** identity/asset bridge ·
 **F3** generative boundary stub.
 
-### Phase 2 — Authoring & embedding
-**Canvas:** **E6** editor · **E7** template-engine + first templates · **E8** component system ·
-**E9** platform embed (Work ▸ Project ▸ Canvas; Profile = published Canvas).
-**Platform:** wire asset references to Canvas; macOS Developer-ID signing + notarization.
-**Gating:** resolve **§5.1 WebView vs native** (blocks E9).
+### Phase 2 — Authoring & embedding  ✅ COMPLETE (Canvas, 2026-06-14)
+**Canvas:** ✅ **E6** editor · ✅ **E7** template-engine (5 domains) · ✅ **E8** component system ·
+✅ **E9** platform embed (Flutter WKWebView host: Work ▸ Project ▸ Canvas; Profile = published Canvas;
+asset refs resolve via the reused Go signed-URL API / F2).
+**Platform:** ✅ asset refs wired to Canvas via the WebView bridge. ▶ macOS Developer-ID signing +
+notarization (A6, needs paid Apple Dev) remains.
+**Gating:** ✅ resolved **§5.1** = WebView-embed (E5).
 
 ### Phase 3 — Intelligence & ingestion
 **Generative:** **G3** scaffold · **G4** model gateway (reuse research) · **G5** real agents → Intent-Patches.

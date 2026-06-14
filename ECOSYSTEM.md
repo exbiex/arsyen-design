@@ -67,10 +67,10 @@ versioning, migration, and template evolution.
 
 | Seam | Producer → Consumer | Contract | Status |
 |---|---|---|---|
-| **Assets** | Platform (Go/S3) → Canvas | signed-URL asset references; Canvas stores ref IDs, resolves to presigned URLs | to build (platform `F2`) |
+| **Assets** | Platform (Go/S3) → Canvas | signed-URL asset references; Canvas stores ref IDs, resolves to presigned URLs | ✅ **built** — reuses the platform `assets` module (`GET /v1/assets/{id}` presigned `url`); resolved over the embed bridge (E9) |
 | **Research → Canvas** | Research → Canvas | semantic content (Research's versioned doc envelope) *adapted* into Canvas sections/components — **no presentation logic crosses** | designed (canvas `13`), to build (P4) |
 | **Generative → Canvas** | Generative → Canvas | **Intent-Patch**: `User → Intent → Generative → patch → Canvas mutation plan → graph`. AI modes Edit / Improve / Reimagine / Generate; AI redesign auto-branches | designed (canvas `12`, generative context), to build (P3) |
-| **Canvas → Platform** | Canvas → Platform | Canvas embedded as **Work ▸ Project ▸ Canvas**; **Profile/Portfolio is a published Canvas** | to build (P2) |
+| **Canvas → Platform** | Canvas → Platform | Canvas embedded as **Work ▸ Project ▸ Canvas**; **Profile/Portfolio is a published Canvas** | ✅ **built (E9)** — Flutter WKWebView host (`flutter_inappwebview`) + `@arsyen/canvas-bridge` protocol + `apps/embed`; route `/canvas`, entry in the Work view |
 | **Publishing** | Canvas → web | render a Canvas at `/username`, `/username/me`, `/username/<slug>` | designed (canvas `14`), MVP `E4` |
 | **Identity / SSO** | Platform → all | token/SSO sharing so Canvas/Research key off the platform user; publishing keys off `/username` | to build (platform `F2`) |
 
