@@ -37,10 +37,11 @@ Workstreams (sequential):
   draft/published; canvas_shares ACL table ready), owner-scoped CRUD + `POST /publish` + **My Canvas**
   list (`GET /v1/canvases`, `?project_id=` filters to a project). Integration test green. *(Specify
   read-enforcement still deferred — UI will show it; ACL is a follow-up.)*
-- **WS-C · Renderer + editor rebuild** — `[ ]`. Rebuild the published renderer to the kit (rAF scroll
+- **WS-C · Renderer + editor rebuild** — `[~]` in progress. **Done (1/n):** the **editor canvas
+  gallery** (#3) — cards of all available canvases (saved library + Blank + the 5 templates), autosave
+  by id, 'Gallery' back button. **Remaining:** rebuild the published renderer to the kit (rAF scroll
   engine: pinned hero, parallax, reveals) + the editor to the canvas-editor kit (contextual tools,
-  on-demand Sections/Inspector, design-pack switch). **Editor canvas gallery** (cards of all available
-  canvases, not just the template) — task §3.
+  on-demand Sections/Inspector, design-pack switch).
 - **WS-D · Create / publish flow (platform)** — `[x]` done (2026-06-14, platform `canvas-v2`).
   `CanvasRepository` + `myCanvasesProvider` on `/v1/canvases`; removed the E9 placeholder; **Profile
   'Create a canvas' → branding takeover → draft → title + visibility picker → publish**; **My Canvas**
