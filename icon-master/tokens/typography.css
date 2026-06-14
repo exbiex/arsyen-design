@@ -1,0 +1,67 @@
+/* ============================================================
+   ARSYEN — TYPOGRAPHY SCALE  (Liquid Glass language)
+   Space Grotesk display, Hanken Grotesk body, Space Mono labels.
+   ============================================================ */
+
+:root {
+  /* ---- Weights ---- */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-heavy: 800;
+
+  /* ---- Sizes (px → rem @16) ---- */
+  --text-display-2xl: 3.5rem;   /* 56 — display */
+  --text-display-xl: 2.75rem;   /* 44 */
+  --text-display-lg: 2.375rem;  /* 38 — h1 */
+  --text-display-md: 1.75rem;   /* 28 — h2 */
+  --text-title-lg: 1.3125rem;   /* 21 — h3 */
+  --text-title-md: 1.0625rem;   /* 17 — title */
+  --text-title-sm: 1rem;        /* 16 */
+
+  --text-body-lg: 1rem;         /* 16 */
+  --text-body-md: 0.9375rem;    /* 15 — body */
+  --text-body-sm: 0.8125rem;    /* 13 — sm */
+
+  --text-label-lg: 0.75rem;     /* 12 */
+  --text-label-md: 0.6875rem;   /* 11 — mono micro-label */
+  --text-label-sm: 0.625rem;    /* 10 */
+
+  /* ---- Line heights ---- */
+  --leading-tight: 1.02;        /* display */
+  --leading-snug: 1.12;         /* h2 */
+  --leading-normal: 1.5;        /* body */
+  --leading-relaxed: 1.6;
+
+  /* ---- Tracking ---- */
+  --tracking-display: -0.03em;  /* −1.68 @56 */
+  --tracking-h1: -0.02em;       /* −0.76 @38 */
+  --tracking-h2: -0.015em;      /* −0.42 @28 */
+  --tracking-h3: -0.01em;
+  --tracking-title: -0.005em;
+  --tracking-normal: 0em;
+  --tracking-mono: 0.06em;      /* Space Mono +0.66 uppercase */
+  --tracking-wide: 0.06em;
+  --tracking-wider: 0.1em;
+}
+
+/* ---- Helper classes ---- */
+.ars-display {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: var(--text-display-2xl); line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-display); color: var(--text-primary);
+}
+.ars-h1 { font-family: var(--font-display); font-weight: 600; font-size: var(--text-display-lg); line-height: 1.06; letter-spacing: var(--tracking-h1); color: var(--text-primary); }
+.ars-h2 { font-family: var(--font-display); font-weight: 600; font-size: var(--text-display-md); line-height: var(--leading-snug); letter-spacing: var(--tracking-h2); color: var(--text-primary); }
+.ars-h3 { font-family: var(--font-display); font-weight: 500; font-size: var(--text-title-lg); line-height: 1.2; letter-spacing: var(--tracking-h3); color: var(--text-primary); }
+.ars-title { font-family: var(--font-text); font-weight: 600; font-size: var(--text-title-md); line-height: 1.3; letter-spacing: var(--tracking-title); color: var(--text-primary); }
+.ars-body { font-family: var(--font-text); font-weight: 400; font-size: var(--text-body-md); line-height: var(--leading-normal); color: var(--text-body); }
+
+/* The Arsyen signature: uppercase Space Mono micro-label. */
+.ars-label {
+  font-family: var(--font-mono); font-weight: 400;
+  font-size: var(--text-label-md); line-height: 1.3;
+  letter-spacing: var(--tracking-mono); text-transform: uppercase;
+  color: var(--text-label);
+}

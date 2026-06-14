@@ -1,0 +1,48 @@
+<!-- @dsCard group="Components" viewport="700x260" name="Surfaces" subtitle="Card & floating panel — the OS building blocks" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; background: var(--bg-canvas); padding: 28px; }
+  .row { display: flex; gap: 18px; align-items: stretch; flex-wrap: wrap; }
+  .t { font-family: var(--font-display); font-weight: 600; font-size: 16px; color: var(--ink-0); margin: 0 0 6px; }
+  .b { font-family: var(--font-text); font-size: 13px; color: var(--ink-2); margin: 0; }
+  .lab { font-family: var(--font-mono); font-size: 10px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ink-4); margin: 0 0 10px; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { Card, StatusPill } = window.ArsyenDesignSystem_992fe7;
+    function Demo() {
+      return (
+        <div className="row">
+          <Card as="panel" style={{ width: 240 }}>
+            <p className="lab">Panel · surface-1</p>
+            <p className="t">Projects</p>
+            <p className="b">Floating OS panel — darker fill, 24px radius, lifted edge.</p>
+          </Card>
+          <Card interactive style={{ width: 220 }}>
+            <p className="lab">Card · interactive</p>
+            <p className="t">SINNERS</p>
+            <div style={{ marginTop: 8 }}><StatusPill tone="planning">PLANNING</StatusPill></div>
+          </Card>
+          <Card glow style={{ width: 200 }}>
+            <p className="lab">Card · glow</p>
+            <p className="t">Selected</p>
+            <p className="b">Coral halo marks the active surface.</p>
+          </Card>
+        </div>
+      );
+    }
+    ReactDOM.createRoot(document.getElementById("root")).render(<Demo/>);
+  </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!-- @dsCard group="Brand" viewport="700x220" name="Wordmark" subtitle="arsyen — lowercase, rounded, set in the system display face" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; background: var(--bg-canvas); padding: 0; }
+  .stage { display: flex; }
+  .pure { flex: 1; height: 220px; display: flex; align-items: center; justify-content: center;
+    background: var(--surface-0); border-right: 1px solid var(--border-subtle); }
+  .living { flex: 1; height: 220px; display: flex; align-items: center; justify-content: center; }
+  .mark { font-family: var(--font-display); font-weight: 700; font-size: 48px;
+    letter-spacing: -.04em; color: #fff; }
+  .mark .y { color: var(--accent); }
+  .small { font-family: var(--font-display); font-weight: 700; font-size: 22px;
+    letter-spacing: -.03em; color: #fff; }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="pure">
+      <div style="display:flex; flex-direction:column; gap:18px; align-items:center;">
+        <div class="mark">arsyen</div>
+        <div class="small">arsyen</div>
+      </div>
+    </div>
+    <div class="living ars-backdrop-living">
+      <div class="mark" style="text-shadow: 0 2px 30px rgba(0,0,0,.4);">arsyen</div>
+    </div>
+  </div>
+</body>
+</html>
