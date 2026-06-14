@@ -41,12 +41,13 @@ Workstreams (sequential):
   engine: pinned hero, parallax, reveals) + the editor to the canvas-editor kit (contextual tools,
   on-demand Sections/Inspector, design-pack switch). **Editor canvas gallery** (cards of all available
   canvases, not just the template) — task §3.
-- **WS-D · Create / publish flow (platform)** — `[~]` in progress. **Done (3/n):** `CanvasRepository`
-  + `myCanvasesProvider` on `/v1/canvases`; removed the E9 placeholder; **Profile 'Create a canvas' →
-  branding takeover → draft → title + visibility picker → publish**; **My Canvas** in the Arsyen bar
-  (`/canvas/mine`); **Project ▸ Canvas** tab (listing + 'New canvas'). **Remaining:** the editor in
-  its **own window** (`desktop_multi_window` → WebView → azure editor embed). *(Create/publish/list
-  need the API restarted to pick up WS-B routes.)* Detail below:
+- **WS-D · Create / publish flow (platform)** — `[x]` done (2026-06-14, platform `canvas-v2`).
+  `CanvasRepository` + `myCanvasesProvider` on `/v1/canvases`; removed the E9 placeholder; **Profile
+  'Create a canvas' → branding takeover → draft → title + visibility picker → publish**; **My Canvas**
+  in the Arsyen bar (`/canvas/mine`); **Project ▸ Canvas** tab (listing + 'New canvas'); the **editor
+  opens in its own native window** (`desktop_multi_window` → WebView → azure editor). analyze + macOS
+  build/codesign green. *(Needs API restarted for routes; editor-window **save-back** to `/v1/canvases`
+  via the bridge is a follow-up.)* Detail below:
   Delete current canvas placeholders. **Profile
   overview → "Create a canvas"** → panels dissolve into the **animating Arsyen branding** → opens a
   **separate window** running the Canvas flow (the Azure design; the coral shell stays in the main
