@@ -32,9 +32,11 @@ Workstreams (sequential):
   *Next within A:* re-skin the **editor chrome** (canvas-editor `styles.ts`, currently hardcoded coral)
   to Azure; port the published-canvas + editor kit visual language; update `canvas/context/07` +
   bring the Azure design-system into a tracked canvas location. **Platform shell is NOT touched.**
-- **WS-B · Go canvas store (platform)** — `[ ]`. New `canvas` Go module: migrations (canvases +
-  shares), create/save, **list-by-user (My Canvas)**, list-by-project, publish, **visibility
-  Public / Private / Project-only / Specify** (Specify = per-person ACL). Tests. Endpoints under `/v1`.
+- **WS-B · Go canvas store (platform)** — `[x]` done (2026-06-14, platform `canvas-v2`). New `canvas`
+  module: migration `00015` (canvases jsonb doc + visibility Public/Private/Project/Specify +
+  draft/published; canvas_shares ACL table ready), owner-scoped CRUD + `POST /publish` + **My Canvas**
+  list (`GET /v1/canvases`, `?project_id=` filters to a project). Integration test green. *(Specify
+  read-enforcement still deferred — UI will show it; ACL is a follow-up.)*
 - **WS-C · Renderer + editor rebuild** — `[ ]`. Rebuild the published renderer to the kit (rAF scroll
   engine: pinned hero, parallax, reveals) + the editor to the canvas-editor kit (contextual tools,
   on-demand Sections/Inspector, design-pack switch). **Editor canvas gallery** (cards of all available
