@@ -15,6 +15,43 @@
 - **Definition of done:** code + tests green; `pnpm i && pnpm build && pnpm typecheck` pass;
   schema changes are versioned + migrate-on-read; the relevant `context/*` doc updated.
 
+---
+
+## ▶▶ CANVAS PRODUCTIZATION (V2) — active program (2026-06-14), supersedes E10+
+
+> **Founder decisions (2026-06-14):** (1) **The Canvas surface has its own design language —
+> Arsyen Azure `#2f6bf3` + Ink + Geist/Geist Mono/Newsreader** (from `raw_templates/Arsyen Canvas
+> Main`). It is **scoped to the Canvas flow only** (the editor + published canvas, which open in a
+> **separate window**). **The coral liquid-glass platform shell is UNCHANGED** — this is not an
+> ecosystem-wide accent change. (2) Run as a **phased program**, started now, ahead of the rest of
+> TASK.md. Branch: canvas `canvas-v2`. Reference design folder = high-fidelity but cosmetic.
+
+Workstreams (sequential):
+- **WS-A · Canvas design-system adoption** — `[~]` in progress. Port Azure/Ink/Geist tokens into the
+  renderer (`tokens.ts`) + Minimal pack; map theme `pure-black → black`; vendor the Arsyen mark/icon.
+  *Next within A:* re-skin the **editor chrome** (canvas-editor `styles.ts`, currently hardcoded coral)
+  to Azure; port the published-canvas + editor kit visual language; update `canvas/context/07` +
+  bring the Azure design-system into a tracked canvas location. **Platform shell is NOT touched.**
+- **WS-B · Go canvas store (platform)** — `[ ]`. New `canvas` Go module: migrations (canvases +
+  shares), create/save, **list-by-user (My Canvas)**, list-by-project, publish, **visibility
+  Public / Private / Project-only / Specify** (Specify = per-person ACL). Tests. Endpoints under `/v1`.
+- **WS-C · Renderer + editor rebuild** — `[ ]`. Rebuild the published renderer to the kit (rAF scroll
+  engine: pinned hero, parallax, reveals) + the editor to the canvas-editor kit (contextual tools,
+  on-demand Sections/Inspector, design-pack switch). **Editor canvas gallery** (cards of all available
+  canvases, not just the template) — task §3.
+- **WS-D · Create / publish flow (platform)** — `[ ]`. Delete current canvas placeholders. **Profile
+  overview → "Create a canvas"** → panels dissolve into the **animating Arsyen branding** → opens a
+  **separate window** running the Canvas flow (the Azure design; the coral shell stays in the main
+  window). Pre-publish visibility picker. On publish: appears under **Arsyen bar ▸ My Canvas** and in
+  **Project ▸ <name> ▸ <Canvas title>**.
+- **WS-E · Multi-tool entry** — `[ ]`. The Canvas surface is invoked from **Storyboard, Shot List**,
+  etc. (those tools stand up as entry points).
+
+**Resolved:** the Canvas flow opens in a **separate OS window** (not a takeover route), carrying the
+Azure design. **Open decisions for WS-B/D (confirm before building):** Specify-sharing ACL scope;
+canvas persistence shape (jsonb doc); macOS multi-window approach (Flutter `desktop_multi_window` vs a
+second `flutter` engine/window).
+
 ## Stack (target, mirror research-platform's toolchain)
 Node 22 · TS strict · ESM · pnpm workspace + Turborepo · Biome · Zod for the schema contract.
 Packages (`context/17_CANVAS_SETUP.md`): `canvas-schema · canvas-renderer · canvas-editor ·

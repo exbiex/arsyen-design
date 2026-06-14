@@ -1,5 +1,15 @@
 # Arsyen — Design Language (the one canonical law)
 
+> 🔵 **TWO DESIGN LANGUAGES (2026-06-14, founder).** Canvas has its **own** design language, distinct
+> from the platform shell:
+> - **Platform shell** (Work, Profile, the app chrome) — **coral `#ff555d` liquid-glass, UNCHANGED.**
+>   Everything in this doc below applies here.
+> - **Arsyen Canvas** (the create/edit/publish flow that opens in a **separate window**) — **Arsyen
+>   Azure `#2f6bf3`** + cool **Ink** neutrals + **Geist / Geist Mono / Newsreader** type, ported from
+>   the `Arsyen Canvas Main` design system. Canonical for the Canvas surface only; see
+>   `canvas/context/07_CANVAS_DESIGN_SYSTEM.md` + the canvas engine tokens. Tracked under **Canvas
+>   Productization (V2)** (`canvas/TASKS.md`). **Not** an ecosystem-wide accent change.
+
 > The single written contract for Arsyen's look, feel, and motion across the shipping surfaces
 > (**macOS** primary · **iOS** later — web client is dropped) and **every** plane (Platform shell ·
 > Canvas experiences). The design-system `ui_kits/web/` stays as visual reference only. The
