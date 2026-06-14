@@ -41,11 +41,12 @@ Workstreams (sequential):
   engine: pinned hero, parallax, reveals) + the editor to the canvas-editor kit (contextual tools,
   on-demand Sections/Inspector, design-pack switch). **Editor canvas gallery** (cards of all available
   canvases, not just the template) — task §3.
-- **WS-D · Create / publish flow (platform)** — `[~]` in progress. **Done (1/n):** Flutter
-  `CanvasRepository` + models wired to `/v1/canvases`; removed the E9 placeholder chip. **Remaining
-  (GUI, next passes):** Profile 'Create a canvas' + branding transition; `desktop_multi_window` canvas
-  window + editor (WebView → azure editor embed); visibility picker; My Canvas in the Arsyen bar;
-  Project ▸ Canvas listing. Detail below:
+- **WS-D · Create / publish flow (platform)** — `[~]` in progress. **Done (2/n):** Flutter
+  `CanvasRepository` wired to `/v1/canvases`; removed the E9 placeholder; **Profile 'Create a canvas'
+  → branding takeover → create draft → title + visibility picker → publish** (azure/ink canvas brand).
+  **Remaining:** the editor in its **own window** (`desktop_multi_window` → WebView → azure editor
+  embed); **My Canvas** in the Arsyen bar; **Project ▸ Canvas** listing. *(Create/publish need the API
+  restarted to pick up WS-B routes.)* Detail below:
   Delete current canvas placeholders. **Profile
   overview → "Create a canvas"** → panels dissolve into the **animating Arsyen branding** → opens a
   **separate window** running the Canvas flow (the Azure design; the coral shell stays in the main
