@@ -24,7 +24,7 @@ no N+1 · update the relevant `context/*` doc in the same change.
 
 | Repo | Next task | What it is | Backlog |
 |---|---|---|---|
-| **Platform** | **C3 leftovers + C6** | Work view: Settings tab + live Overview/Activity, and backend deltas (migrations + Go module + tests) for new Work categories (Notes/Ideas/References). Then breadth: port Discover/Tools/Studio/Profile onto the B-series kit. *(Done since: B2/B3 parity, C4/C5 detail rail, **A4/A5** native chrome + identity. A6 distribution blocked on a paid Apple Dev account.)* | [`platform/TASKS.md`](./platform/TASKS.md) |
+| **Platform** | **Breadth — port Discover / Tools / Studio / Profile** onto the B-series kit | The remaining views still run on old styling/sample data; bring them onto the shared primitives. *(Done since: B2/B3 parity, C4/C5 detail rail, **A4/A5** native chrome + identity, **C3** Settings + live Activity, **C6** the `work` module — Notes/Ideas/References CRUD. A6 distribution blocked on a paid Apple Dev account.)* | [`platform/TASKS.md`](./platform/TASKS.md) |
 | **Canvas** | **E6 — `canvas-editor`** | **Phase 1 (E1–E5) ✅ complete (2026-06-14)** — schema-first read path built & green: `@arsyen/canvas-schema`, React `canvas-renderer` + `motion-engine`, `publishing-engine`; render-in-app = **WebView-embed** (E5). Next: Phase 2 authoring (E6). | [`canvas/TASKS.md`](./canvas/TASKS.md) |
 | **Research** | **T-102 — Consumer onboarding + integration guide** | Consumer registration + webhook secret/signature verification + an integration guide (graceful degradation on unknown blocks, `schemaVersion` pinning). **Phases 6–7 ✅ + T-100/T-101/T-103 ✅ done** (full editorial Flow, knowledge graph, real auth, generated OpenAPI spec, observability hardening); T-104 (deploy) is also unblocked. | [`research/TASKS.md`](./research/TASKS.md) |
 | **Generative** | **G1 — Intent-Patch contract** (Canvas E2 ✅ shipped — `@arsyen/canvas-schema`) | Define the versioned Intent-Patch Zod contract, then **G2** stub the producer so Canvas can wire the seam with no AI. | [`generative/TASKS.md`](./generative/TASKS.md) |
@@ -34,7 +34,7 @@ no N+1 · update the relevant `context/*` doc in the same change.
 ## Phase-by-phase (cross-repo)
 
 ### Phase 0 — Contracts & toolchain  *(mostly done)*
-- ✅ Platform: macOS toolchain, native chrome + identity (A4/A5), token port (B1), primitive parity (B2/B3), fonts (B4), theme layer (B5), glass (B6), Work view (C1–C5).
+- ✅ Platform: macOS toolchain, native chrome + identity (A4/A5), token port (B1), primitive parity (B2/B3), fonts (B4), theme layer (B5), glass (B6), Work view (C1–C6: Settings + live Activity + the `work` module — Notes/Ideas/References CRUD).
 - ✅ Research: Phases 0–5 complete (T-001…T-080).
 - ✅ **Docs consolidated into this hub.**
 - ✅ Canvas **E1–E5** complete (scaffold + `canvas-schema` + renderer + publishing + render decision).

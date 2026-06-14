@@ -104,8 +104,11 @@ Treat POC code as a ~4/10 baseline to **evolve**, not rewrite.
 - [x] **C2 Persistent workspace.** Workspace loads the selected object; switching category/object/
   view is `setState`, not a route — wallpaper/shell never reset.
 - [x] **C3 Object views = not pages.** Project shows Overview / Board / Action Plans / Files /
-  Activity as in-workspace view tabs (Board/Plans/Files reuse the live controllers; Overview =
-  stats + Canvas teaser; Activity = placeholder). *(Settings tab + richer Overview/Activity TODO.)*
+  Activity / **Settings** as in-workspace view tabs. **Leftovers done 2026-06-14:** **Activity** is
+  now a **live** feed (`GET /v1/projects/{id}/activity`, composed server-side from tickets + files —
+  no events table) with a recent-activity strip on **Overview**; a **Settings** tab does rename /
+  visibility / status (chips from the project's statuses) / danger-zone delete, wired to
+  `ProjectsController.patch`/`delete`.
 - [x] **C4 Synchronized selection.** Done 2026-06-14. Focused ticket lifted to a shared
   `boardSelectionProvider` (Riverpod `Notifier.family` by project). The ticket detail now opens in
   the kit's **340px rail beside the board** (both normal + fullscreen; rail scrolls internally;
@@ -117,8 +120,15 @@ Treat POC code as a ~4/10 baseline to **evolve**, not rewrite.
 - [x] **C5 Fullscreen as state.** Focus toggle in the action bar slides the rail away + widens
   the workspace via `AnimatedPositioned` (shell-owned `immersive` notifier); changing tab exits.
   *(Polish: center/cap workspace width in focus per the kit.)*
-- [ ] **C6 Backend deltas.** Any schema/endpoint changes for Notes/Ideas/References etc. as
-  they come online (migrations + Go module + tests). **Acceptance:** new categories CRUD live.
+- [x] **C6 Backend deltas.** Done 2026-06-14. New **`work`** module + `00014_work_items.sql`
+  (one `kind`-tagged, owner-scoped table for **Notes / Ideas / References**; full + partial
+  indexes per the engineering bar). `GET /v1/work/items?kind=`, `GET /v1/work/counts`, `POST`,
+  `GET/PATCH/DELETE /v1/work/items/{id}`; owner-scoped authz (no existence leak); idea-status +
+  reference-url validation. Integration test green; devseed seeds samples. Flutter `features/work/`
+  (models · repo · `FutureProvider.family` + `WorkActions`) wired into the Work rail (live counts +
+  object list) + an autosaving editor with all states (loading/empty/error/just-deleted). HTTP
+  smoke-tested end-to-end (counts, list, create/patch/delete, 422 on bad status). **Acceptance met:
+  the new categories CRUD live.** *(Inbox/Tasks/Moodboards/etc. remain scaffolded placeholders.)*
 
 ## WS-D — Web app — ❌ DROPPED (2026-06-14)
 The web client/companion is **no longer built**; the app ships on macOS (+ iOS later) only.
@@ -154,11 +164,12 @@ the design `ui_kits/web/` and the Next `web/` dir stay as reference. Revive only
 ## Immediate next  (updated 2026-06-14)
 Done: macOS builds/runs/code-signs + login (A0–A3), **native chrome + identity (A4/A5)**, token
 port (B1), **primitive parity B2**, specimen route **B3**, fonts (B4), **theme layer B5** +
-**glass fidelity B6**, and the **Work** view (C1–C5). The whole WS-B port is complete; WS-A is
-complete except A6 (distribution, needs a paid Apple Dev account). Now → finish Work, then breadth:
-1. **C3 leftovers + C6** — Settings tab, live Overview/Activity; backend deltas (migrations + Go
-   module + tests) for new Work categories (Notes/Ideas/References) so they CRUD live. **→ next.**
-2. Breadth: port **Discover / Tools / Studio / Profile** onto the B-series primitives/kit.
+**glass fidelity B6**, the **Work** view (C1–**C6**, incl. Settings + live Activity + the **work**
+module: Notes/Ideas/References CRUD). The whole WS-B port + WS-C are complete; WS-A is complete
+except A6 (distribution, needs a paid Apple Dev account). Now → breadth:
+1. Breadth: port **Discover / Tools / Studio / Profile** onto the B-series primitives/kit. **→ next.**
+2. Graduate more Work categories as they come online (Inbox/Tasks/Moodboards/Contacts/…) — the
+   `work` module + rail/object-list pattern is in place to extend.
 3. **A6 distribution** — Developer-ID signing + notarization (blocked on a paid Apple Dev Program).
 Parallel track (separate repo): **E1/E2** scaffold `arsyen-canvas-engine` + lock `canvas-schema`.
 Resolve **`../ECOSYSTEM.md §5.1` (does Flutter render Canvas via WebView or native?)** before Phase 2.
