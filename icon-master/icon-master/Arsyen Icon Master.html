@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Arsyen — App Icon Master</title>
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  html, body { margin: 0; height: 100%; background: #0b0b0d; }
+  body { font-family: var(--font-text, -apple-system, system-ui, sans-serif); }
+
+  /* ============================================================
+     THE ICON
+     One scalable component. Everything derives from --s (size in px).
+     ============================================================ */
+  .ic-wrap {
+    position: relative;
+    display: inline-flex;
+    line-height: 0;
+  }
+  /* ambient + brand glow, applied to the wrapper so it survives the clip */
+  .ic-wrap--midnight { filter: drop-shadow(0 calc(var(--s) * 0.03) calc(var(--s) * 0.06) rgba(0,0,0,0.55)) drop-shadow(0 0 calc(var(--s) * 0.10) rgba(255,85,93,0.28)); }
+  .ic-wrap--aurora   { filter: drop-shadow(0 calc(var(--s) * 0.03) calc(var(--s) * 0.06) rgba(0,0,0,0.5)); }
+  .ic-wrap--coral    { filter: drop-shadow(0 calc(var(--s) * 0.03) calc(var(--s) * 0.06) rgba(0,0,0,0.45)) drop-shadow(0 0 calc(var(--s) * 0.10) rgba(255,85,93,0.40)); }
+  .ic-wrap--glass    { filter: drop-shadow(0 calc(var(--s) * 0.03) calc(var(--s) * 0.06) rgba(0,0,0,0.55)); }
+  .ic-wrap--flat     { filter: none; }
+
+  .ic {
+    position: relative;
+    width: var(--s); height: var(--s);
+    clip-path: url(#ars-squircle);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  /* lit bevel: top light + bottom shade, follows the squircle */
+  .ic::after {
+    content: ""; position: absolute; inset: 0; z-index: 3; pointer-events: none;
+    background: linear-gradient(180deg, rgba(255,255,255,0.10), transparent 22%, transparent 74%, rgba(0,0,0,0.22));
+  }
+
+  /* --- backgrounds --- */
+  .ic--midnight {
+    background-color: #060608;
+    background-image:
+      radial-gradient(128% 96% at 50% 124%, rgba(255,85,93,0.52), rgba(255,85,93,0) 58%),
+      radial-gradient(100% 72% at 50% -12%, rgba(255,255,255,0.06), transparent 42%);
+  }
+  .ic--aurora {
+    background-color: #0a0509;
+    background-image:
+      radial-gradient(60% 66% at 27% 28%, rgba(255,85,93,0.92), transparent 62%),
+      radial-gradient(58% 62% at 79% 32%, rgba(216,59,142,0.78), transparent 64%),
+      radial-gradient(64% 64% at 64% 110%, rgba(138,92,255,0.74), transparent 60%),
+      radial-gradient(52% 52% at 88% 80%, rgba(232,132,58,0.5), transparent 60%);
+  }
+  .ic--coral {
+    background-image: linear-gradient(180deg, #ff7d75 0%, #ff5a5c 52%, #ec4950 100%);
+  }
+  .ic--glass {
+    background-color: #0c0d10;
+    background-image:
+      radial-gradient(72% 72% at 28% 22%, rgba(255,85,93,0.34), transparent 60%),
+      radial-gradient(72% 72% at 82% 92%, rgba(138,92,255,0.30), transparent 62%),
+      linear-gradient(180deg, rgba(22,22,26,0.5), rgba(8,8,10,0.72));
+  }
+
+  /* --- glyph --- */
+  .ic__glyph {
+    position: absolute; inset: 0; z-index: 2;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display, -apple-system, system-ui, sans-serif);
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    line-height: 1;
+    /* size + optical centering */
+    font-size: calc(var(--s) * 0.58);
+    transform: translateY(calc(var(--s) * -0.045));
+    user-select: none;
+  }
+  .ic__a { font-weight: 680; }
+  .ic__slash {
+    font-weight: 480;
+    margin-left: calc(var(--s) * 0.05);
+  }
+  .ic__dot {
+    font-weight: 700;
+    margin-left: calc(var(--s) * 0.012);
+  }
+
+  /* glyph colorways */
+  .ic--midnight .ic__a,
+  .ic--glass .ic__a    { color: #f7f7f8; }
+  .ic--midnight .ic__slash, .ic--midnight .ic__dot,
+  .ic--glass .ic__slash, .ic--glass .ic__dot { color: #ff6e75; text-shadow: 0 0 calc(var(--s) * 0.04) rgba(255,85,93,0.55); }
+
+  .ic--aurora .ic__a   { color: #ffffff; }
+  .ic--aurora .ic__slash, .ic--aurora .ic__dot { color: #ffffff; opacity: 0.92; }
+
+  .ic--coral .ic__a    { color: #2a0608; }
+  .ic--coral .ic__slash, .ic--coral .ic__dot { color: #fff3f1; }
+
+  /* ============================================================
+     CARD CHROME inside artboards
+     ============================================================ */
+  .stage {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    background:
+      radial-gradient(120% 120% at 50% 0%, #16161a, #0a0a0c 70%);
+  }
+  .stage--neutral { background: #1c1c1f; }
+
+  .specimen { display: flex; flex-direction: column; align-items: center; gap: 22px; }
+  .meta { font-family: var(--font-mono, ui-monospace, monospace); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #6c6c74; text-align: center; }
+  .meta b { color: #a9a9b0; font-weight: 500; }
+
+  /* legibility strip */
+  .leg-row { display: flex; align-items: flex-end; gap: 40px; }
+  .leg-cell { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+
+  /* ---------- iOS home ---------- */
+  .ios {
+    width: 372px; height: 760px; border-radius: 46px; overflow: hidden; position: relative;
+    background-color: #0a0509;
+    background-image:
+      radial-gradient(58% 50% at 26% 22%, rgba(255,85,93,0.55), transparent 60%),
+      radial-gradient(62% 54% at 82% 30%, rgba(216,59,142,0.5), transparent 62%),
+      radial-gradient(70% 60% at 60% 104%, rgba(138,92,255,0.55), transparent 60%),
+      radial-gradient(50% 46% at 90% 78%, rgba(232,132,58,0.4), transparent 60%);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08), 0 30px 80px rgba(0,0,0,0.5);
+    font-family: var(--font-text);
+    color: #fff;
+  }
+  .ios__status { display: flex; justify-content: space-between; align-items: center; padding: 16px 28px 0; font-size: 14px; font-weight: 600; }
+  .ios__time { font-family: var(--font-display); }
+  .ios__sigs { display: flex; align-items: center; gap: 7px; }
+  .ios__sigs .bars { display: flex; align-items: flex-end; gap: 2px; height: 11px; }
+  .ios__sigs .bars i { width: 3px; background: #fff; border-radius: 1px; }
+  .ios__sigs .bars i:nth-child(1){ height: 4px; } .ios__sigs .bars i:nth-child(2){ height: 6px; } .ios__sigs .bars i:nth-child(3){ height: 8px; } .ios__sigs .bars i:nth-child(4){ height: 11px; }
+  .ios__sigs .batt { width: 24px; height: 12px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.55); position: relative; padding: 1.5px; }
+  .ios__sigs .batt::after { content:""; position:absolute; right:-3px; top:3px; width:2px; height:4px; background:rgba(255,255,255,0.55); border-radius:0 1px 1px 0; }
+  .ios__sigs .batt i { display:block; height:100%; width:78%; background:#fff; border-radius:1.5px; }
+  .ios__clock { text-align: center; margin: 26px 0 30px; }
+  .ios__clock .d { font-size: 17px; font-weight: 500; opacity: 0.92; letter-spacing: 0.02em; }
+  .ios__clock .t { font-family: var(--font-display); font-size: 76px; font-weight: 650; letter-spacing: -0.03em; line-height: 1; margin-top: 2px; }
+  .ios__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px 18px; padding: 6px 26px 0; }
+  .ios__app { display: flex; flex-direction: column; align-items: center; gap: 7px; }
+  .ios__app .lbl { font-size: 12px; font-weight: 450; opacity: 0.92; text-shadow: 0 1px 3px rgba(0,0,0,0.4); }
+  .ph { width: 60px; height: 60px; clip-path: url(#ars-squircle); background: rgba(255,255,255,0.12); box-shadow: inset 0 1px 0 rgba(255,255,255,0.16); }
+  .ios__dock { position: absolute; left: 16px; right: 16px; bottom: 18px; height: 96px; border-radius: 34px; display: flex; align-items: center; justify-content: space-around; padding: 0 14px;
+    background: rgba(255,255,255,0.10); backdrop-filter: blur(26px) saturate(140%); -webkit-backdrop-filter: blur(26px) saturate(140%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.16); }
+
+  /* ---------- macOS ---------- */
+  .macwrap { display: flex; flex-direction: column; align-items: center; gap: 40px; }
+  .mac-desk {
+    width: 620px; height: 360px; border-radius: 16px; position: relative; overflow: hidden;
+    background-color: #0a0509;
+    background-image:
+      radial-gradient(50% 60% at 22% 26%, rgba(255,85,93,0.5), transparent 60%),
+      radial-gradient(54% 60% at 82% 34%, rgba(138,92,255,0.5), transparent 62%),
+      radial-gradient(60% 70% at 60% 108%, rgba(232,132,58,0.4), transparent 60%);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.07);
+    display: flex; align-items: flex-end; justify-content: center; padding-bottom: 16px;
+  }
+  .dock {
+    display: flex; align-items: flex-end; gap: 14px; padding: 12px 16px; border-radius: 24px;
+    background: rgba(255,255,255,0.11); backdrop-filter: blur(28px) saturate(150%); -webkit-backdrop-filter: blur(28px) saturate(150%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.22), inset 0 0 0 1px rgba(255,255,255,0.08), 0 18px 50px rgba(0,0,0,0.5);
+  }
+  .dock .ph { width: 58px; height: 58px; border-radius: 14px; clip-path: none; }
+  .dock-dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.6); margin: 0 auto; margin-top: 5px; }
+
+  .finder-tile { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+</style>
+</head>
+<body>
+
+<!-- Apple-squircle (superellipse n=5), normalized 0..1 for any size -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<clipPath id="ars-squircle" clipPathUnits="objectBoundingBox"><path d="M1.00000,0.50000L0.99924,0.68840L0.99695,0.74822L0.99311,0.79118L0.98771,0.82553L0.98071,0.85428L0.97204,0.87893L0.96165,0.90032L0.94944,0.91898L0.93528,0.93528L0.91898,0.94944L0.90032,0.96165L0.87893,0.97204L0.85428,0.98071L0.82553,0.98771L0.79118,0.99311L0.74822,0.99695L0.68840,0.99924L0.50000,1.00000L0.31160,0.99924L0.25178,0.99695L0.20882,0.99311L0.17447,0.98771L0.14572,0.98071L0.12107,0.97204L0.09968,0.96165L0.08102,0.94944L0.06472,0.93528L0.05056,0.91898L0.03835,0.90032L0.02796,0.87893L0.01929,0.85428L0.01229,0.82553L0.00689,0.79118L0.00305,0.74822L0.00076,0.68840L0.00000,0.50000L0.00076,0.31160L0.00305,0.25178L0.00689,0.20882L0.01229,0.17447L0.01929,0.14572L0.02796,0.12107L0.03835,0.09968L0.05056,0.08102L0.06472,0.06472L0.08102,0.05056L0.09968,0.03835L0.12107,0.02796L0.14572,0.01929L0.17447,0.01229L0.20882,0.00689L0.25178,0.00305L0.31160,0.00076L0.50000,0.00000L0.68840,0.00076L0.74822,0.00305L0.79118,0.00689L0.82553,0.01229L0.85428,0.01929L0.87893,0.02796L0.90032,0.03835L0.91898,0.05056L0.93528,0.06472L0.94944,0.08102L0.96165,0.09968L0.97204,0.12107L0.98071,0.14572L0.98771,0.17447L0.99311,0.20882L0.99695,0.25178L0.99924,0.31160L1.00000,0.50000Z"/></clipPath>
+</defs></svg>
+
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel">
+const { DesignCanvas, DCSection, DCArtboard } = window;
+
+function ArsIcon({ size = 320, variant = "midnight" }) {
+  return (
+    <div className={"ic-wrap ic-wrap--" + variant} style={{ "--s": size + "px" }}>
+      <div className={"ic ic--" + variant}>
+        <div className="ic__glyph">
+          <span className="ic__a">a</span><span className="ic__slash">/</span><span className="ic__dot">.</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Specimen({ size, variant, name, sub }) {
+  return (
+    <div className="stage">
+      <div className="specimen">
+        <ArsIcon size={size} variant={variant} />
+        <div className="meta"><b>{name}</b><br/>{sub}</div>
+      </div>
+    </div>
+  );
+}
+
+function Ph({ s = 60, style }) { return <div className="ph" style={{ width: s, height: s, ...style }} />; }
+
+function IOSHome() {
+  return (
+    <div className="stage">
+      <div className="ios">
+        <div className="ios__status"><span className="ios__time">9:41</span><span className="ios__sigs"><span className="bars"><i></i><i></i><i></i><i></i></span><span style={{ fontSize: 11, fontWeight: 600 }}>5G</span><span className="batt"><i></i></span></span></div>
+        <div className="ios__clock">
+          <div className="d">Saturday, June 14</div>
+          <div className="t">9:41</div>
+        </div>
+        <div className="ios__grid">
+          <div className="ios__app"><Ph/><span className="lbl">Notes</span></div>
+          <div className="ios__app"><Ph/><span className="lbl">Mail</span></div>
+          <div className="ios__app"><Ph/><span className="lbl">Files</span></div>
+          <div className="ios__app"><ArsIcon size={60} variant="midnight"/><span className="lbl">arsyen</span></div>
+        </div>
+        <div className="ios__dock">
+          <Ph/><Ph/><Ph/><ArsIcon size={60} variant="midnight"/>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MacOS() {
+  return (
+    <div className="stage">
+      <div className="macwrap">
+        <div className="mac-desk">
+          <div className="dock">
+            <div><Ph s={58} style={{ clipPath: "none", borderRadius: 14 }}/></div>
+            <div><Ph s={58} style={{ clipPath: "none", borderRadius: 14 }}/></div>
+            <div><Ph s={58} style={{ clipPath: "none", borderRadius: 14 }}/></div>
+            <div style={{ textAlign: "center" }}>
+              <ArsIcon size={64} variant="midnight"/>
+              <div className="dock-dot"></div>
+            </div>
+            <div><Ph s={58} style={{ clipPath: "none", borderRadius: 14 }}/></div>
+            <div><Ph s={58} style={{ clipPath: "none", borderRadius: 14 }}/></div>
+          </div>
+        </div>
+        <div className="finder-tile">
+          <ArsIcon size={132} variant="midnight"/>
+          <div className="meta"><b>arsyen.app</b><br/>Launchpad · Finder · About</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Legibility() {
+  const sizes = [128, 64, 32, 16];
+  return (
+    <div className="stage stage--neutral">
+      <div className="leg-row">
+        {sizes.map((s) => (
+          <div className="leg-cell" key={s}>
+            <ArsIcon size={s} variant="midnight"/>
+            <div className="meta">{s}px</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <DesignCanvas>
+      <DCSection id="master" title="Icon Master" subtitle="arsyen · macOS + iOS — the a/ mark in SF Pro Display, lit on black">
+        <DCArtboard id="m-1024" label="Master · 1024×1024 (full-bleed)" width={520} height={520}>
+          <Specimen size={360} variant="midnight" name="ARSYEN — APP ICON" sub="a / · the wordmark face · coral on midnight" />
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="directions" title="Background Directions" subtitle="Same a/ glyph — four backdrop treatments to choose from">
+        <DCArtboard id="d-midnight" label="A · Midnight (recommended)" width={300} height={360}>
+          <Specimen size={208} variant="midnight" name="MIDNIGHT" sub="coral glow on pure black" />
+        </DCArtboard>
+        <DCArtboard id="d-aurora" label="B · Aurora" width={300} height={360}>
+          <Specimen size={208} variant="aurora" name="AURORA" sub="living gradient-mesh, white mark" />
+        </DCArtboard>
+        <DCArtboard id="d-coral" label="C · Coral" width={300} height={360}>
+          <Specimen size={208} variant="coral" name="CORAL" sub="lit-glass accent, ink mark" />
+        </DCArtboard>
+        <DCArtboard id="d-glass" label="D · Frosted glass" width={300} height={360}>
+          <Specimen size={208} variant="glass" name="FROSTED GLASS" sub="dark glass over faint aurora" />
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="ios" title="iOS — Home Screen" subtitle="Full-bleed continuous-corner squircle, label set in SF Pro Text">
+        <DCArtboard id="ios-home" label="iPhone · Home & Dock" width={460} height={840}>
+          <IOSHome />
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="macos" title="macOS — Dock & Launchpad" subtitle="Same squircle, floating with the Big Sur drop shadow">
+        <DCArtboard id="mac" label="Desktop dock + app tile" width={720} height={620}>
+          <MacOS />
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="legibility" title="Scale Test" subtitle="The a/ mark holds from 128px down to the 16px favicon">
+        <DCArtboard id="leg" label="128 · 64 · 32 · 16" width={620} height={300}>
+          <Legibility />
+        </DCArtboard>
+      </DCSection>
+    </DesignCanvas>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

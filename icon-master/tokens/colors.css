@@ -1,0 +1,125 @@
+/* ============================================================
+   ARSYEN — COLOR TOKENS  (Liquid Glass language)
+   Dark only. Black-dominant. One coral accent per view.
+   Values are the canonical brief tokens; semantic aliases follow.
+   ============================================================ */
+
+:root {
+  /* ---- Accent: coral (the one accent) ---- */
+  --coral: #ff555d;
+  --coral-hover: #ff6e75;
+  --coral-press: #e8454d;
+  --coral-soft: color-mix(in srgb, var(--coral) 14%, transparent);   /* tints / fills */
+  --coral-glow: color-mix(in srgb, var(--coral) 45%, transparent);    /* shadow under coral elements */
+  --on-coral: #1a0608;                      /* near-black text on coral */
+
+  /* accent is user-switchable; design against the token, default coral.
+     Switching theme accent only needs --coral/-hover/-press — everything
+     below derives via color-mix so the whole system re-tints in one move. */
+  --accent: var(--coral);
+  --accent-hover: var(--coral-hover);
+  --accent-press: var(--coral-press);
+  --accent-soft: var(--coral-soft);
+  --accent-soft-hover: color-mix(in srgb, var(--coral) 22%, transparent);
+  --accent-line: color-mix(in srgb, var(--coral) 40%, transparent);
+  --accent-glow: var(--coral-glow);
+  --accent-glow-soft: color-mix(in srgb, var(--coral) 26%, transparent);
+  --accent-ink: var(--coral-hover);   /* coral as text on dark (legible) */
+  --on-accent: var(--on-coral);
+
+  /* Alternate accents (Studio ▸ accent picker) */
+  --accent-red: #ff555d;
+  --accent-violet: #8a7bef;
+  --accent-blue: #5b9dff;
+  --accent-amber: #f5b544;
+
+  /* ---- Matte-black surface ramp ---- */
+  --bg: #000000;        /* app base — PURE BLACK (default, OLED, cinematic) */
+  --bg: #000000;        /* app base — PURE BLACK (default, OLED, cinematic) */
+  --sunken: #000000;    /* deepest */
+  --surface-1: #0c0d0f; /* raised */
+  --surface-2: #131417; /* card */
+  --surface-3: #1b1c20; /* input / chip */
+  --surface-4: #25272c; /* hover */
+  --surface-5: #303237; /* active hover */
+  --surface-0: #000000;
+
+  /* Translucent overlays */
+  --overlay-02: rgba(255, 255, 255, 0.02);
+  --overlay-04: rgba(255, 255, 255, 0.04);
+  --overlay-06: rgba(255, 255, 255, 0.06);
+  --overlay-10: rgba(255, 255, 255, 0.10);
+  --scrim: rgba(0, 0, 0, 0.55);
+  --scrim-strong: rgba(0, 0, 0, 0.74);
+
+  /* ---- Glass material defaults ---- */
+  --glass-fill: rgba(18, 19, 23, 0.08);          /* clear — black stays dominant */
+  --glass-fill-strong: rgba(14, 15, 18, 0.30);
+  --glass-edge: rgba(255, 255, 255, 0.20);       /* top-edge highlight hairline */
+  --glass-border: rgba(255, 255, 255, 0.09);
+  --glass-blur: 26px;
+
+  /* ---- Hairlines / borders ---- */
+  --hairline-color: rgba(255, 255, 255, 0.07);
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-default: rgba(255, 255, 255, 0.10);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --border-bright: rgba(255, 255, 255, 0.22);
+
+  /* ---- Text ramp ---- */
+  --fg1: #ededee;   /* primary */
+  --fg2: #9b9da2;   /* secondary / body */
+  --fg3: #66686d;   /* muted / labels */
+  --fg-disabled: #44464a;
+  --ink-0: var(--fg1);
+  --ink-1: #c4c5c9;
+  --ink-2: var(--fg2);
+  --ink-3: var(--fg3);
+  --ink-4: var(--fg-disabled);
+  --ink-5: #313337;
+
+  /* ---- Status ---- */
+  --ok: #4ade80;
+  --warn: #f5b544;
+  --info: #5b9dff;
+  --danger: #ff555d;
+  --presence-online: #4ade80;
+
+  /* Priority / status semantics (board) */
+  --planning: var(--warn);
+  --planning-soft: rgba(245, 181, 68, 0.14);
+  --planning-line: rgba(245, 181, 68, 0.36);
+  --high: var(--danger);       --high-soft: rgba(255, 85, 93, 0.16);
+  --urgent: var(--danger);     --urgent-soft: rgba(255, 85, 93, 0.20);
+  --low: var(--info);          --low-soft: rgba(91, 157, 255, 0.16);
+  --review: var(--accent-violet); --review-soft: rgba(138, 123, 239, 0.16);
+  --done: var(--ok);           --done-soft: rgba(74, 222, 128, 0.15);
+
+  /* ============================================================
+     SEMANTIC ALIASES
+     ============================================================ */
+  --bg-canvas: var(--bg);
+  --bg-panel: var(--surface-1);
+  --bg-card: var(--surface-2);
+  --bg-input: var(--surface-3);
+  --bg-control: var(--surface-3);
+  --bg-control-hover: var(--surface-4);
+  --bg-hover: var(--overlay-04);
+
+  --text-primary: var(--fg1);
+  --text-body: var(--fg2);
+  --text-muted: var(--fg3);
+  --text-faint: var(--fg-disabled);
+  --text-label: var(--fg3);
+  --text-on-accent: var(--on-coral);
+  --text-link: var(--coral-hover);
+
+  --border: var(--border-default);
+  --border-card: var(--border-subtle);
+  --border-control: var(--border-default);
+  --border-focus: var(--accent-line);
+
+  --primary: var(--coral);
+  --primary-hover: var(--coral-hover);
+  --primary-active: var(--coral-press);
+}

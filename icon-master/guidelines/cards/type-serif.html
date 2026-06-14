@@ -1,0 +1,27 @@
+<!-- @dsCard group="Type" viewport="700x200" name="Serif accent & families" subtitle="New York for editorial moments; the four-family stack" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; background: var(--bg-canvas); padding: 26px; }
+  .quote { font-family: var(--font-serif); font-size: 23px; line-height: 1.4;
+    color: var(--ink-1); max-width: 540px; font-style: italic; }
+  .families { display: flex; gap: 28px; margin-top: 20px; flex-wrap: wrap; }
+  .fam { display: flex; flex-direction: column; gap: 3px; }
+  .fam .big { font-size: 22px; color: var(--text-primary); }
+  .fam .lab { font-family: var(--font-mono); font-size: 10px; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--text-muted); }
+</style>
+</head>
+<body>
+  <div class="quote">“Rev 6 reads much tighter — the ferry scene finally earns its place.”</div>
+  <div class="families">
+    <div class="fam"><span class="big" style="font-family: var(--font-display); font-weight:700;">Display</span><span class="lab">SF Pro Display</span></div>
+    <div class="fam"><span class="big" style="font-family: var(--font-text);">Text</span><span class="lab">SF Pro Text</span></div>
+    <div class="fam"><span class="big" style="font-family: var(--font-mono);">Mono</span><span class="lab">SF Mono</span></div>
+    <div class="fam"><span class="big" style="font-family: var(--font-serif); font-style: italic;">Serif</span><span class="lab">New York</span></div>
+  </div>
+</body>
+</html>
