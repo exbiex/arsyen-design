@@ -45,11 +45,24 @@ Treat POC code as a ~4/10 baseline to **evolve**, not rewrite.
 - [x] **A3 Network entitlement.** Added `com.apple.security.network.client` to both
   `macos/Runner/{DebugProfile,Release}.entitlements` so the sandboxed app reaches `:8080`.
   *(Verify on first run: live data loads; Keychain `flutter_secure_storage` + `file_picker` work.)*
-- [ ] **A4 Native window chrome.** Title-bar style, min window size, traffic-light inset,
-  full-screen behavior, restore window frame. Match the Mac UI kit (`design-system/ui_kits/mac/`).
-  **Acceptance:** window feels native; the liquid shell fills it edge-to-edge.
-- [ ] **A5 App identity.** Bundle id, app name, version, icon (from `design-system/assets/`),
-  category. **Acceptance:** correct icon + name in Dock/Finder.
+- [x] **A4 Native window chrome.** Done 2026-06-14. `MainFlutterWindow.swift`: **transparent
+  unified title bar** (`titlebarAppearsTransparent` + `titleVisibility=.hidden` + `.fullSizeContentView`)
+  so the animated wallpaper flows behind a hidden title; standard traffic-lights overlay the
+  top-left; `backgroundColor = .black` (no white launch flash); min 1040×720; **window frame
+  remembered** across launches via `setFrameAutosaveName("ArsyenMainWindow")` (centered 1440×900
+  on first run). Deliberately **not** `isMovableByWindowBackground` (it hijacks in-app drags on
+  Flutter macOS — the title-bar strip alone stays the drag region). Shell top padding bumped to
+  32px on macOS (`liquid_shell.dart`) to clear the traffic lights. Built + codesigned clean
+  (adhoc, FinderInfo 0). **Acceptance met** (final eyeball on next `flutter run -d macos`).
+- [x] **A5 App identity.** Done 2026-06-14 — fully met. Display name **Arsyen** (`CFBundleName` +
+  `CFBundleDisplayName` + MainMenu.xib About/Hide/Quit), bundle id kept **`com.arsyen.arsyen`**
+  (changing it breaks the signing identity + Keychain), version 1.0.0, category
+  **`public.app-category.productivity`**, copyright fixed — all verified in the built bundle.
+  **Icon:** the master is code at `icon-master/icon-master/Arsyen Icon Master.html` (the `a/.` mark,
+  "Midnight" colorway). Rendered to a transparent 1024×1024 via headless Chrome
+  (`app/tool/icon_source/icon_master_render.html` → `arsyen_icon_1024.png`), then fanned into every
+  asset-catalog size by `app/tool/macos_app_icon.sh`; baked into `Assets.car`, legible to 16px.
+  **Acceptance met:** correct name + icon in Dock/Finder (final eyeball on next run).
 - [ ] **A6 Distribution (decide channel first — roadmap §5.5).** Developer-ID signing +
   notarization OR Mac App Store; then auto-update channel. **Acceptance:** a signed,
   notarized build opens on a clean Mac without Gatekeeper warnings. *(needs paid Apple Dev Program)*
@@ -139,15 +152,13 @@ the design `ui_kits/web/` and the Next `web/` dir stay as reference. Revive only
 ---
 
 ## Immediate next  (updated 2026-06-14)
-Done: macOS builds/runs/code-signs + login (A0–A3), token port (B1), fonts (B4), **theme layer
-B5** + **glass fidelity B6**, and the **Work** view (C1/C2/C3/C5). Now → primitive fidelity, then
-breadth, then native chrome:
-1. **B2 primitive parity** — reconcile Flutter `glass.dart`/`controls.dart` with the kit's
-   `components/` (Button, IconButton, Input, Switch, SegmentedControl, Tabs, FilterChip, Avatar,
-   Badge, StatusPill, ProgressMeter, Tag); one implementation each. **→ this is the platform's next task.**
-2. **C4** — the kit's 340px inline task detail beside the board + cross-view task focus from Plans.
-3. **A4 / A5** — native window chrome + app icon/identity.
-4. **B3** specimen `/design` route; **C3 leftovers** (Settings tab, live Overview/Activity).
-5. Breadth: port **Discover / Tools / Studio / Profile** to the new kit.
+Done: macOS builds/runs/code-signs + login (A0–A3), **native chrome + identity (A4/A5)**, token
+port (B1), **primitive parity B2**, specimen route **B3**, fonts (B4), **theme layer B5** +
+**glass fidelity B6**, and the **Work** view (C1–C5). The whole WS-B port is complete; WS-A is
+complete except A6 (distribution, needs a paid Apple Dev account). Now → finish Work, then breadth:
+1. **C3 leftovers + C6** — Settings tab, live Overview/Activity; backend deltas (migrations + Go
+   module + tests) for new Work categories (Notes/Ideas/References) so they CRUD live. **→ next.**
+2. Breadth: port **Discover / Tools / Studio / Profile** onto the B-series primitives/kit.
+3. **A6 distribution** — Developer-ID signing + notarization (blocked on a paid Apple Dev Program).
 Parallel track (separate repo): **E1/E2** scaffold `arsyen-canvas-engine` + lock `canvas-schema`.
 Resolve **`../ECOSYSTEM.md §5.1` (does Flutter render Canvas via WebView or native?)** before Phase 2.
