@@ -24,20 +24,21 @@ no N+1 · update the relevant `context/*` doc in the same change.
 
 | Repo | Next task | What it is | Backlog |
 |---|---|---|---|
-| **Platform** | **B2 — Primitive parity** | Reconcile Flutter `glass.dart`/`controls.dart` with the kit's `components/`; one implementation each (Button, IconButton, Input, Switch, SegmentedControl, Tabs, FilterChip, Avatar, Badge, StatusPill, ProgressMeter, Tag). Then **C4** (340px inline task detail), **A4/A5** (native chrome + icon). | [`platform/TASKS.md`](./platform/TASKS.md) |
-| **Canvas** | **E1 → E2** | Scaffold the TS monorepo, then lock **`canvas-schema`** (the universal contract). | [`canvas/TASKS.md`](./canvas/TASKS.md) |
-| **Research** | **T-081 — Entity-Extraction agent** | Propose-only entity/relationship extraction to a staging area (never auto-merge). Then T-082/T-083/T-084 → T-085 full Flow (Phase 6). | [`research/TASKS.md`](./research/TASKS.md) |
-| **Generative** | **G1 — Intent-Patch contract** (needs Canvas E2) | Define the versioned Intent-Patch Zod contract, then **G2** stub the producer so Canvas can wire the seam with no AI. | [`generative/TASKS.md`](./generative/TASKS.md) |
+| **Platform** | **Breadth — port Discover / Tools / Studio / Profile** onto the B-series kit | The remaining views still run on old styling/sample data; bring them onto the shared primitives. *(Done since: B2/B3 parity, C4/C5 detail rail, **A4/A5** native chrome + identity, **C3** Settings + live Activity, **C6** the `work` module — Notes/Ideas/References CRUD. A6 distribution blocked on a paid Apple Dev account.)* | [`platform/TASKS.md`](./platform/TASKS.md) |
+| **Canvas** | **E6 — `canvas-editor`** | **Phase 1 (E1–E5) ✅ complete (2026-06-14)** — schema-first read path built & green: `@arsyen/canvas-schema`, React `canvas-renderer` + `motion-engine`, `publishing-engine`; render-in-app = **WebView-embed** (E5). Next: Phase 2 authoring (E6). | [`canvas/TASKS.md`](./canvas/TASKS.md) |
+| **Research** | **T-102 — Consumer onboarding + integration guide** | Consumer registration + webhook secret/signature verification + an integration guide (graceful degradation on unknown blocks, `schemaVersion` pinning). **Phases 6–7 ✅ + T-100/T-101/T-103 ✅ done** (full editorial Flow, knowledge graph, real auth, generated OpenAPI spec, observability hardening); T-104 (deploy) is also unblocked. | [`research/TASKS.md`](./research/TASKS.md) |
+| **Generative** | **G1 — Intent-Patch contract** (Canvas E2 ✅ shipped — `@arsyen/canvas-schema`) | Define the versioned Intent-Patch Zod contract, then **G2** stub the producer so Canvas can wire the seam with no AI. | [`generative/TASKS.md`](./generative/TASKS.md) |
 
 ---
 
 ## Phase-by-phase (cross-repo)
 
 ### Phase 0 — Contracts & toolchain  *(mostly done)*
-- ✅ Platform: macOS toolchain, token port (B1), fonts (B4), theme layer (B5), glass (B6), Work view (C1–C5).
+- ✅ Platform: macOS toolchain, native chrome + identity (A4/A5), token port (B1), primitive parity (B2/B3), fonts (B4), theme layer (B5), glass (B6), Work view (C1–C6: Settings + live Activity + the `work` module — Notes/Ideas/References CRUD).
 - ✅ Research: Phases 0–5 complete (T-001…T-080).
 - ✅ **Docs consolidated into this hub.**
-- ▶ Canvas **E1/E2** scaffold + `canvas-schema`. ▶ Resolve `ECOSYSTEM.md §5` gating decisions.
+- ✅ Canvas **E1–E5** complete (scaffold + `canvas-schema` + renderer + publishing + render decision).
+  Resolved `ECOSYSTEM.md §5` forks #1 (render = WebView-embed) and #3 (contract = npm `@arsyen/canvas-schema`).
 
 ### Phase 1 — macOS complete · Work · Canvas read-path · Web (limited)
 **Platform** (`platform/TASKS.md`): **B2** primitive parity · **B3** specimen route · **C4**
@@ -73,4 +74,5 @@ icon · **A6** distribution (needs paid Apple Dev). *(WS-D web — dropped.)*
 - **Platform / Canvas / Generative:** top-to-bottom within the current workstream/phase in their
   `TASKS.md`; the table above names the current head.
 - **Research:** follow its own protocol — `research/context/CLAUDE.md §2`: the lowest-ID `TODO`
-  whose dependencies are all `DONE`. That is currently **T-081**.
+  whose dependencies are all `DONE`. That is currently **T-102** (Phases 6–7 + T-100/T-101/T-103
+  are done; T-104 is also unblocked).

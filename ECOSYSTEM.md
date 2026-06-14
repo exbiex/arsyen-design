@@ -100,11 +100,16 @@ research publishes `@arsyen-research/content-schema`).
 
 ## 5. The big open forks (resolve early — they reshape the plan)
 
-1. **How does Canvas render inside the Flutter app?** WebView-embed of the TS renderer, or a
-   parallel native renderer? (The rendering model names both Web + Native runtimes.) **Biggest fork** — blocks Canvas-in-Work (P2). Platform `E5`.
+1. ~~**How does Canvas render inside the Flutter app?**~~ **RESOLVED 2026-06-14 (E5): WebView-embed**
+   of the TS renderer (`@arsyen/canvas-renderer`) in WKWebView — one renderer, pixel-identical web +
+   app, motion driven imperatively for 60fps. Native renderer kept as a later escape hatch (schema
+   is renderer-agnostic). Rationale + Phase-2 bridge implications: `canvas/context/06_CANVAS_RENDERING_MODEL.md`.
 2. **Generative: stub or build, and is it shared with Research's gateway?** Recommend stubbing
    behind the Intent-Patch interface in P1–P2; build for real in P3, reusing Research's gateway.
-3. **Where do shared contracts live** (`canvas-schema`, Intent-Patch)? npm vs submodule.
+3. ~~**Where do shared contracts live** (`canvas-schema`, Intent-Patch)?~~ **RESOLVED 2026-06-14:
+   npm package.** `canvas-schema` is published as **`@arsyen/canvas-schema`** from the canvas repo
+   (versioned, `dist/schema.json` JSON-Schema artifact for non-TS consumers); the Intent-Patch
+   contract will follow the same pattern. Package built in E2; actual registry publish at P2 cross-wiring.
 4. **Cross-repo identity & assets** — platform-owned (Go/S3); Canvas publishing keys off
    `/username`. Need token/SSO sharing + a signed-URL asset contract before P2.
 5. **macOS distribution channel** — Mac App Store vs Developer-ID + notarization (direct).

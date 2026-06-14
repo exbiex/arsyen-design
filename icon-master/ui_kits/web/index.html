@@ -1,0 +1,40 @@
+<!-- @dsCard group="Web App" viewport="1180x740" name="Web App" subtitle="Invite-gated auth (landing · login · request) + public portfolio" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Arsyen — Web</title>
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  html, body { height: 100%; }
+  body { margin: 0; background: #050507; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 24px; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="browser-window.jsx"></script>
+<script type="text/babel" src="../mac/icons.jsx"></script>
+<script type="text/babel" src="../mac/ui.jsx"></script>
+<script type="text/babel" src="screens.jsx"></script>
+</head>
+<body>
+<div id="app"></div>
+<script type="text/babel" data-presets="react">
+  const URLS = { landing: "arsyen.com", login: "arsyen.com/login", request: "arsyen.com/request-invite", portfolio: "arsyen.com/renn-okabe" };
+  const TABS = { landing: "arsyen", login: "Log in · arsyen", request: "Request an invite · arsyen", portfolio: "Renn Okabe · arsyen" };
+  function App() {
+    const [view, setView] = React.useState("landing");
+    const Body = { landing: window.WebLanding, login: window.WebLogin, request: window.WebRequest, portfolio: window.WebPortfolio }[view];
+    return (
+      <window.ChromeWindow width={1180} height={740} url={URLS[view]} tabs={[{ title: TABS[view] }]}>
+        <div style={{ height: "100%", overflowY: "auto", background: "var(--bg-canvas)" }}>
+          <Body go={setView} />
+        </div>
+      </window.ChromeWindow>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById("app")).render(<App />);
+</script>
+</body>
+</html>

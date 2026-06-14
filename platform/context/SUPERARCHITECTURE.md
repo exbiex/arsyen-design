@@ -155,9 +155,22 @@ interfaces today, which keeps a clean seam if a module is ever extracted.
     **inline below the board in fullscreen**; outside fullscreen they float via
     `showGlassWorkPanel` over the gently dimmed shell. Dialogs re-provide
     `AppearanceScope` (they mount above it).
+  **C3 (2026-06-14):** a live **Activity** feed — `GET /v1/projects/{id}/activity`,
+  composed at read time from tickets + files (actor join, newest-first, capped; **no
+  events table**, so it's always live) — plus a **Settings** view tab (rename / visibility
+  / status / danger-zone delete, via the existing `PATCH`/`DELETE /v1/projects/{id}`), and a
+  recent-activity strip on Overview.
   **Pending:** templates, members/ACL API, crew avatar URLs, canvas↔board sync,
   Resources tab (needs Tools).**)** *(Infra: MinIO uses a named volume — host
   bind-mounts deadlock on macOS Docker virtiofs, breaking uploads.)*
+- `work` — the Work container's lightweight, **user-scoped** objects beside Projects:
+  **Notes · Ideas · References** (one `kind`-tagged table, `work_items`). owner_id is the
+  access path *and* the authorization boundary (no cross-user existence leak); ideas carry a
+  status, references a url. `GET /v1/work/items?kind=`, `GET /v1/work/counts`,
+  `POST /v1/work/items`, `GET/PATCH/DELETE /v1/work/items/{id}`. **Built 2026-06-14 (C6,
+  `00014_work_items.sql`).** Flutter `features/work/` (models · repo · `FutureProvider.family`
+  + a `WorkActions` mutator that invalidates) wired into the Work-view rail (live counts +
+  object list) + an autosaving editor.
 - `canvas` — **to be REBUILT from scratch.** The first implementation (Canvas V2
   free-form moodboard: opaque jsonb block-doc, snapshots, mentions, Flutter
   editor) was **removed entirely on 2026-06-12 by founder decision** — the Go
@@ -214,7 +227,9 @@ validation, ids (UUIDv7).
   tasks.action_plan_id/column_id/created_by, task_comments.parent_id/author_id,
   task_attachments.added_by, project_files.added_by, canvases.created_by,
   invite_codes.used_by, projects.status_id, asset_access_events.created_at for
-  the rollup window, asset_references (ref_type, ref_id) reverse lookups).
+  the rollup window, asset_references (ref_type, ref_id) reverse lookups;
+  `00014`: work_items.owner_id full index for the ON DELETE CASCADE — the partial
+  (owner_id, kind, updated_at) hot-path index can't serve a user hard-delete).
 - **Pooling:** pgxpool in-app; pgbouncer in front at scale. Read replicas added
   when read load demands (logical replication).
 

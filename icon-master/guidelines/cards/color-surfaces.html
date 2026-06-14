@@ -1,0 +1,33 @@
+<!-- @dsCard group="Colors" viewport="700x210" name="Surfaces" subtitle="Near-black canvas, faintly lifted panels & controls" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; background: var(--bg-canvas); padding: 26px; }
+  .grid { display: flex; gap: 14px; flex-wrap: wrap; }
+  .sw { width: 96px; }
+  .chip { height: 76px; border-radius: var(--radius-md); border: 1px solid var(--border-default); }
+  .name { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .03em;
+    color: var(--text-primary); margin-top: 9px; }
+  .hex { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="sw"><div class="chip" style="background: var(--surface-0);"></div>
+      <div class="name">surface-0</div><div class="hex">#000000</div></div>
+    <div class="sw"><div class="chip" style="background: var(--surface-1);"></div>
+      <div class="name">surface-1</div><div class="hex">#0b0b0c</div></div>
+    <div class="sw"><div class="chip" style="background: var(--surface-2);"></div>
+      <div class="name">surface-2</div><div class="hex">#121214</div></div>
+    <div class="sw"><div class="chip" style="background: var(--surface-3);"></div>
+      <div class="name">surface-3</div><div class="hex">#1a1a1d</div></div>
+    <div class="sw"><div class="chip" style="background: var(--surface-4);"></div>
+      <div class="name">surface-4</div><div class="hex">#232327</div></div>
+    <div class="sw"><div class="chip" style="background: var(--surface-5);"></div>
+      <div class="name">surface-5</div><div class="hex">#2c2c31</div></div>
+  </div>
+</body>
+</html>
