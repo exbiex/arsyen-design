@@ -1,0 +1,34 @@
+<!-- @dsCard group="Colors" viewport="700x190" name="Status & priority" subtitle="Amber, red, blue, violet, mint — pills carry a leading dot" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  body { margin: 0; background: var(--bg-canvas); padding: 26px; }
+  .rows { display: flex; flex-direction: column; gap: 16px; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: .02em;
+    padding: 5px 11px 5px 9px; border-radius: var(--radius-full);
+  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; }
+  .meta { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); }
+</style>
+</head>
+<body>
+  <div class="rows">
+    <div class="row">
+      <span class="pill" style="background: var(--planning-soft); color: var(--planning);"><span class="dot" style="background: var(--planning);"></span>PLANNING</span>
+      <span class="pill" style="background: var(--high-soft); color: var(--high);"><span class="dot" style="background: var(--high);"></span>High</span>
+      <span class="pill" style="background: var(--planning-soft); color: var(--planning);"><span class="dot" style="background: var(--planning);"></span>Medium</span>
+      <span class="pill" style="background: var(--low-soft); color: var(--low);"><span class="dot" style="background: var(--low);"></span>Low</span>
+      <span class="pill" style="background: var(--review-soft); color: var(--review);"><span class="dot" style="background: var(--review);"></span>Review</span>
+      <span class="pill" style="background: var(--done-soft); color: var(--done);"><span class="dot" style="background: var(--done);"></span>Done</span>
+      <span class="pill" style="background: var(--urgent-soft); color: var(--urgent);"><span class="dot" style="background: var(--urgent);"></span>Urgent</span>
+    </div>
+    <div class="row meta">planning&nbsp;#e0a23e&nbsp;&nbsp;·&nbsp;&nbsp;high&nbsp;#f2685f&nbsp;&nbsp;·&nbsp;&nbsp;low&nbsp;#5c8ae6&nbsp;&nbsp;·&nbsp;&nbsp;review&nbsp;#b48be8&nbsp;&nbsp;·&nbsp;&nbsp;done&nbsp;#43b97d&nbsp;&nbsp;·&nbsp;&nbsp;urgent&nbsp;#ff564e</div>
+  </div>
+</body>
+</html>
