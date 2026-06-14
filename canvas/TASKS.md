@@ -37,11 +37,12 @@ Workstreams (sequential):
   draft/published; canvas_shares ACL table ready), owner-scoped CRUD + `POST /publish` + **My Canvas**
   list (`GET /v1/canvases`, `?project_id=` filters to a project). Integration test green. *(Specify
   read-enforcement still deferred — UI will show it; ACL is a follow-up.)*
-- **WS-C · Renderer + editor rebuild** — `[~]` in progress. **Done (1/n):** the **editor canvas
-  gallery** (#3) — cards of all available canvases (saved library + Blank + the 5 templates), autosave
-  by id, 'Gallery' back button. **Remaining:** rebuild the published renderer to the kit (rAF scroll
-  engine: pinned hero, parallax, reveals) + the editor to the canvas-editor kit (contextual tools,
-  on-demand Sections/Inspector, design-pack switch).
+- **WS-C · Renderer + editor rebuild** — `[~]` in progress. **Done (2/n):** the **editor canvas
+  gallery** (#3); the **editor rebuilt to the `canvas-editor` kit verbatim** (design system reproduced —
+  Ink/Azure/Geist; canvas-as-floating-page, contextual section tools, on-demand Sections/Inspector,
+  editor Arsyen bar, design-pack/theme switch, inline contentEditable) + the **branding splash** (logo +
+  Geist) on window open; **create now opens the canvas window directly**. **Remaining:** rebuild the
+  **published renderer** to the published-canvas kit (rAF scroll engine: pinned hero, parallax, reveals).
 - **WS-D · Create / publish flow (platform)** — `[x]` done (2026-06-14, platform `canvas-v2`).
   `CanvasRepository` + `myCanvasesProvider` on `/v1/canvases`; removed the E9 placeholder; **Profile
   'Create a canvas' → branding takeover → draft → title + visibility picker → publish**; **My Canvas**
