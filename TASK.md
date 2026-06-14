@@ -26,7 +26,7 @@ no N+1 · update the relevant `context/*` doc in the same change.
 |---|---|---|---|
 | **Platform** | **Breadth — port Discover / Tools / Studio / Profile** onto the B-series kit | The remaining views still run on old styling/sample data; bring them onto the shared primitives. *(Done since: B2/B3 parity, C4/C5 detail rail, **A4/A5** native chrome + identity, **C3** Settings + live Activity, **C6** the `work` module — Notes/Ideas/References CRUD. A6 distribution blocked on a paid Apple Dev account.)* | [`platform/TASKS.md`](./platform/TASKS.md) |
 | **Canvas** | **E6 — `canvas-editor`** | **Phase 1 (E1–E5) ✅ complete (2026-06-14)** — schema-first read path built & green: `@arsyen/canvas-schema`, React `canvas-renderer` + `motion-engine`, `publishing-engine`; render-in-app = **WebView-embed** (E5). Next: Phase 2 authoring (E6). | [`canvas/TASKS.md`](./canvas/TASKS.md) |
-| **Research** | **T-104 — Deploy** (Phase 8 exit) | Docker images (platform + studio); provision managed Postgres+pgvector / Redis / R2; CI publishes `content-schema` on version bump + deploys. **Phases 6–7 ✅ + T-100/T-101/T-102/T-103 ✅ done** (editorial Flow, knowledge graph, real auth, OpenAPI spec, observability hardening, consumer onboarding). T-104 is the last open Phase 8 task; Phase 9+ is trigger-based only. | [`research/TASKS.md`](./research/TASKS.md) |
+| **Research** | **— none scheduled (Phases 0–8 ✅ COMPLETE, T-001…T-104)** | The editorial producer is **feature-complete**: content contract, AI pipeline, knowledge graph, real auth, OpenAPI spec, observability hardening, consumer onboarding, and **deploy** (one platform image + prod migrator + GHCR CI; managed + self-host paths; a published doc verified reachable via `/v1` from the built image). Phase 9+ (T-900…T-906) is **trigger-based only**. | [`research/TASKS.md`](./research/TASKS.md) |
 | **Generative** | **G1 — Intent-Patch contract** (Canvas E2 ✅ shipped — `@arsyen/canvas-schema`) | Define the versioned Intent-Patch Zod contract, then **G2** stub the producer so Canvas can wire the seam with no AI. | [`generative/TASKS.md`](./generative/TASKS.md) |
 
 ---
@@ -74,5 +74,5 @@ icon · **A6** distribution (needs paid Apple Dev). *(WS-D web — dropped.)*
 - **Platform / Canvas / Generative:** top-to-bottom within the current workstream/phase in their
   `TASKS.md`; the table above names the current head.
 - **Research:** follow its own protocol — `research/context/CLAUDE.md §2`: the lowest-ID `TODO`
-  whose dependencies are all `DONE`. That is currently **T-104** (the last open Phase 8 task;
-  Phases 6–7 + T-100/T-101/T-102/T-103 are done; Phase 9+ is trigger-based only).
+  whose dependencies are all `DONE`. **Phases 0–8 (T-001…T-104) are all DONE — no open TODO.**
+  Phase 9+ (T-900…T-906) is trigger-based; create one only when its trigger fires.
