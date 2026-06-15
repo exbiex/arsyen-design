@@ -69,6 +69,15 @@ Workstreams (sequential):
   (lands straight in that template's editor after the splash); non-canvas tools show a "coming soon"
   toast (no dead taps). Also fixed here: the **My Canvas glass crash** (`AppearanceScope` missing on the
   pushed route — wrapped like the image editor).
+- **WS-F · Editing-feel + flow polish** — `[~]` in progress (2026-06-15, both repos `canvas-v2`).
+  **Done:** create-a-canvas opens the window **directly** (removed the in-app create/publish page);
+  Profile lists the creator's canvases with an **eye → view** in the same window; a **Tools "Arsyen
+  Canvas" card**; **window chrome** fixed (slim title-bar strip → drag + traffic-light space); each
+  design pack opens at its **own canvas width**; **Preview** renders the true post-publish reader;
+  ingestion **section detection** splits at semantic boundaries; the **load complement** (reopen pulls
+  the stored doc). **Remaining (each its own slice, several need new platform backend):** right-side
+  **text + animation inspector**; **image upload + Global File Management**; the **publish destination
+  chooser** (Profile Portfolio / Project / Moodboard / named draft); **live home-card thumbnails**.
 
 **Resolved:** the Canvas flow opens in a **separate OS window** (not a takeover route), carrying the
 Azure design. **Open decisions for WS-B/D (confirm before building):** Specify-sharing ACL scope;
