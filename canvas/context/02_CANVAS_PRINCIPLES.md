@@ -12,3 +12,7 @@
 10. Vertical narrative is the primary experience model.
 11. Controlled variation over design chaos.
 12. Branching before large AI changes.
+13. Interactions are declarative semantic behavior — the fourth independent concern.
+14. Collections are semantic — one design drives the data, never a generic table.
+15. Collaboration happens on the semantic graph — merges are meaningful, not pixel-level.
+16. Import recovers design intent — foreign markup is never stored as runtime truth.
