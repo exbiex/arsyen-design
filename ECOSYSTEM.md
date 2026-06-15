@@ -52,6 +52,9 @@ The **Canvas Schema** is the source of truth for any experience. Everything is b
 - **Three layers stay independent — never merged:** **Content** (semantic data) ·
   **Structure** (sections/components graph) · **Presentation** (themes + design packs +
   motion profiles). This separation is a Canvas non-negotiable.
+- **Interactions are a fourth independent concern** (declarative scroll/behavior, keyed by section —
+  canvas `18`); **Collections** add semantic data-binding (one design drives N items — canvas `19`).
+  Both stay separate from content/structure/presentation. `SCHEMA_VERSION` 1→2 introduces interactions.
 - **Sections are semantic experience objects; Components are first-class objects** with a data
   contract, editing rules, and AI rules. Semantic identity (not styling) is what's stored.
 - **Versioned + backward-compatible**, migrate-on-read; branching before large AI changes.
@@ -73,6 +76,8 @@ versioning, migration, and template evolution.
 | **Canvas → Platform** | Canvas → Platform | Canvas embedded as **Work ▸ Project ▸ Canvas**; **Profile/Portfolio is a published Canvas** | ✅ **built (E9)** — Flutter WKWebView host (`flutter_inappwebview`) + `@arsyen/canvas-bridge` protocol + `apps/embed`; route `/canvas`, entry in the Work view |
 | **Publishing** | Canvas → web | render a Canvas at `/username`, `/username/me`, `/username/<slug>` | designed (canvas `14`), MVP `E4` |
 | **Identity / SSO** | Platform → all | token/SSO sharing so Canvas/Research key off the platform user; publishing keys off `/username` | to build (platform `F2`) |
+| **Collaboration** | Canvas ↔ Platform | CRDT presence/sync over the semantic graph; a platform WS sync server (auth off the platform user, rooms keyed by canvas id) | designed (canvas `20`), to build (E17) |
+| **Ingestion adapters** | external tools → Canvas | Stitch / Claude Design / Figma / screenshot → DesignHints → design-pack classification → editable template; imported markup never stored as truth | designed (canvas `15`), v1 built; design-intent = E11-v2 |
 
 ### Where shared contracts live (open — gating decision)
 `canvas-schema` and the Intent-Patch protocol are shared by ≥2 repos. Decide **npm package vs

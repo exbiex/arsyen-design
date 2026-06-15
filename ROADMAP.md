@@ -70,13 +70,17 @@ client.** "Start the app" = the macOS app only.
 - **Generative:** stand up for real (model gateway + agents, reusing Research's gateway);
   implement the **Intent-Patch** flow (User→Intent→Generative→patch→Canvas mutation); AI modes
   Edit / Improve / Reimagine / Generate; auto-branch on AI redesign.
-- **Canvas:** `ingestion-engine` (BYOD: HTML/Figma/screenshots/Claude-Design/Stitch → Canvas
-  Schema; never store imported HTML as runtime truth); versioning / branching / merge.
+- **Canvas — V3 "Beat Framer" program** (canvas `TASKS.md`): **E13** design-pack depth + the Scroll
+  Narrative Engine + the Interactions concern (the one-tap re-skin demo); **E11-v2** design-intent
+  ingestion (Stitch / Claude-Design / Figma / screenshot → DesignHints → pack classification →
+  editable template; never store imported markup as truth); **E10** Intent-Patch application; **E12**
+  versioning / branch / merge.
 - **Research:** Phase 7 knowledge graph.
 
 ### Phase 4 — Knowledge & scale
 - **Research × Canvas** adapter (semantic content → experiences).
-- More design/motion packs; community/marketplace components.
+- **Canvas:** E16 collections / data-binding; E17 real-time collaboration (CRDT; needs a platform WS
+  sync seam); community / marketplace components. (Core design/motion-pack depth ships in E13, Phase 3.)
 - **iOS app** to feature-completeness.
 - Category graduation (Work → Library / Growth) once Work is mature.
 - **Research:** Phase 8 hardening + consumer onboarding + deploy.
