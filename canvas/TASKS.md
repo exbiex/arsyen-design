@@ -84,6 +84,91 @@ Azure design. **Open decisions for WS-B/D (confirm before building):** Specify-s
 canvas persistence shape (jsonb doc); macOS multi-window approach (Flutter `desktop_multi_window` vs a
 second `flutter` engine/window).
 
+## ▶▶ CANVAS V3 — BEAT FRAMER (system design) · active program (2026-06-16)
+
+> **Founder decision (2026-06-16):** make the system design beat Framer on the axes its
+> pixels-are-truth architecture structurally can't follow. Strategy = **moat-first depth** (stay
+> narrative-first / opinionated — never a generic builder; non-goals in `context/01_CANVAS_VISION.md`).
+> Commit to all four net-new primitives **as semantic primitives**: Interactions, Versioning,
+> Collections, Collaboration. **Design-intent ingestion is a co-equal pillar.** This program is the
+> detailed home of E13 / E11-v2 / E10 / E12 + the new E16 / E17, and re-sequences Phase 3 below by
+> leverage × independence.
+
+**Thesis:** *Framer is a design tool that outputs a website; Arsyen is a narrative engine where
+meaning is the source of truth and design is a swappable, AI-directable, multi-surface interpretation.*
+
+### Scorecard — the program's definition of done (each row is an epic's exit criterion)
+| Axis | Framer | Canvas target | Epic |
+|---|---|---|---|
+| Instant re-skin | redesign each variant by hand | one tap re-choreographs every section | E13 |
+| Scroll narrative / motion | per-element hand-wiring | declarative, pack-driven, reduced-motion, 60fps | E13 |
+| AI editing | a layout you babysit | edits *meaning* via Intent-Patch; reimagine auto-branches | E10 |
+| Multi-surface | exports a site | one renderer → web + in-app + Profile, pixel-identical | done (E5/E9) |
+| Import / BYOD | pixel-trace, frozen | design-*intent* recovery → editable template | E11-v2 |
+| Version control | linear history | semantic snapshot / branch / merge; branch-before-AI | E12 |
+| Collections | CMS | semantic collections — one design drives N items | E16 |
+| Collaboration | multiplayer | CRDT multiplayer on the semantic graph | E17 |
+| Taste by default | blank canvas | controlled variation; every output on-brand | E13 |
+
+### Order (leverage × independence)
+**E13 → E11-v2 → E10 → E12 → E16 → E17.** E13 + E11-v2's deterministic core ship now (no external
+dep) and carry both the re-skin demo and the import story. E10 + ingestion's AI refinement need
+Generative **G1**. E17 needs a platform WS seam. E16–E17 span the Phase 3→4 boundary.
+
+### E13 (elevated) · Design-Pack Depth + Scroll Narrative Engine + Interactions layer  ★ the headline
+- **Status:** [~] (schema spine + Editorial pack done 2026-06-16; remaining: Cinematic / Apple-Narrative /
+  Experimental packs + wiring the Interactions contract into the reader-engine) · **Depends on:** —
+  (buildable now) · **Ref:** `context/18_CANVAS_INTERACTION_MODEL.md`,
+  `11_CANVAS_MOTION_ENGINE.md`, `07_CANVAS_DESIGN_SYSTEM.md`, `../DESIGN_LANGUAGE.md §Canvas`
+- **Goal:** make the moat *visible* — flip an experience's whole design language in one tap.
+- **Scope:** (1) **Interactions concern** — new `canvas-schema/src/interactions.ts` (declarative
+  Behavior union keyed by section), wire into `Canvas`, bump `SCHEMA_VERSION` 1→2 + migrate-on-read.
+  (2) **Design Pack Engine** — `packages/design-packs`: real Editorial / Cinematic / Apple-Narrative /
+  Experimental packs (token set + layout grammar + motion binding); Minimal already wired. (3) wire
+  the four packs + the Interactions contract into the WS-C reader-engine (the rAF loop already runs
+  the choreography — give it the schema to read).
+- **Acceptance:** one-tap Minimal⇄Editorial⇄Cinematic re-skin re-choreographs every section;
+  reduced-motion honored; unknown behavior degrades; round-trip + v1→v2 migrate tests green.
+
+### E11-v2 · Design-intent ingestion (Stitch / Claude Design → Arsyen template)  ★ co-equal pillar
+- **Status:** [ ] · **Depends on:** E13 (for correct re-render; deterministic core has no AI dep) ·
+  **Ref:** `context/15_CANVAS_INGESTION_ENGINE.md`
+- **Goal:** recover design DNA, not just text — mint an editable, restyleable Arsyen **template**.
+- **Scope:** L0 source adapters → DesignHints (parse the Stitch/Claude `tailwind-config`); L1 extend
+  `collect()` (grid→gallery/collection, hero detection); **L2 deterministic presentation classifier**
+  DesignHints → {theme, designPack, motion}; L3 template synthesis (editable slots + assetId
+  placeholders, `meta.templateRef`); L4 register assets + keep original HTML/screen.png as side-by-side
+  Preview. Deltas vs v1: infer presentation (not passed in via `IngestOptions`); register assets (not
+  `assetId: src`).
+- **Acceptance:** all 17 `raw_templates/` ingest into the correct {theme, designPack} with editable
+  slots; classifier output snapshot-tested; side-by-side fidelity ≥ threshold.
+
+### E10 · Intent-Patch application (AI edits meaning)
+- **Status:** [ ] · **Depends on:** Generative **G1** (stub the interface now) · **Ref:**
+  `12_CANVAS_AI_INTEGRATION.md`, `generative/context/`
+- **Scope/Acceptance:** apply a typed mutation plan via the **same invertible-command path** as human
+  edits (E6); modes Edit / Improve / Reimagine / Generate; **Reimagine auto-branches** (hooks E12);
+  AI never mutates directly. Patch applies, undo/redo works, reimagine creates a branch.
+
+### E12 · Versioning — snapshot / branch / merge
+- **Status:** [ ] · **Depends on:** — · **Ref:** `16_CANVAS_VERSIONING.md`
+- **Scope:** `packages/versioning-engine` — Snapshot / Branch over the doc; three-way merge on the
+  section graph (tractable via stable ids); `meta` gains `branchRef` / `snapshotRef`; branch-before-AI
+  hook for E10.
+- **Acceptance:** snapshot + branch + a clean three-way merge of divergent section edits.
+
+### E16 (new) · Collections / data-binding (semantic CMS-lite)
+- **Status:** [ ] · **Depends on:** E13 · **Ref:** `19_CANVAS_DATA_BINDING.md`
+- **Scope:** `CollectionContent` kind (`content.ts`) + `Section.binding` (`structure.ts`); renderer
+  expands the item template per record; sources include ingestion (card-grid→collection) + Research.
+- **Acceptance:** a work-index / blog-index renders N items from one bound design; pack-swap restyles all.
+
+### E17 (new) · Real-time collaboration (CRDT)
+- **Status:** [ ] · **Depends on:** platform WS sync seam · **Ref:** `20_CANVAS_COLLABORATION.md`
+- **Scope:** `packages/collaboration-engine` — CRDT over content store + structure graph; editor
+  commands → ops; presence at section/component granularity. Heaviest; sequenced last.
+- **Acceptance:** two clients edit different nodes → converge; same-field edits resolve without loss.
+
 ## Stack (target, mirror research-platform's toolchain)
 Node 22 · TS strict · ESM · pnpm workspace + Turborepo · Biome · Zod for the schema contract.
 Packages (`context/17_CANVAS_SETUP.md`): `canvas-schema · canvas-renderer · canvas-editor ·
@@ -169,16 +254,18 @@ motion-engine · template-engine · publishing-engine · ingestion-engine`.
   asset API (F2, reused)**. Profile-as-published-Canvas reuses the same surface. Ref `06` + `../ECOSYSTEM.md §3/§5`.
 
 ## PHASE 3 — Intelligence & ingestion
-- **E10 · Intent-Patch application** — apply a mutation plan from the Generative plane to the
-  graph; **AI redesigns auto-branch**; AI never mutates directly. Ref `12_CANVAS_AI_INTEGRATION.md`,
-  `generative/context/`.
-- **E11 · `ingestion-engine` (BYOD)** — Claude Design / Google Stitch / Figma / HTML / Framer /
-  Webflow / screenshots → Canvas Schema; **never store imported HTML as runtime truth.**
+> **Re-sequenced by the V3 "Beat Framer" program above** (E13 → E11-v2 → E10 → E12 → E16 → E17) —
+> full detail there; summary here.
+- **E13 · Design-Pack Depth + Scroll Narrative Engine + Interactions** — *now the lead epic;* the
+  one-tap re-skin demo. No external dep. Ref `18_CANVAS_INTERACTION_MODEL.md`, `11_CANVAS_MOTION_ENGINE.md`.
+- **E11-v2 · Design-intent ingestion** — Claude Design / Stitch / Figma / screenshots → DesignHints →
+  design-pack classification → editable **template**; **never store imported markup as runtime truth.**
   Ref `15_CANVAS_INGESTION_ENGINE.md`.
-- **E12 · Versioning engine** — history / snapshots / branches / merge. Ref `16_CANVAS_VERSIONING.md`.
-- **E13 · Full motion-engine + design-pack set** — Editorial / Cinematic / Apple-Narrative /
-  Experimental packs; the full Scroll Narrative Engine. Ref `11_CANVAS_MOTION_ENGINE.md`,
-  `../DESIGN_LANGUAGE.md §Canvas design`.
+- **E10 · Intent-Patch application** — AI edits *meaning*; **redesigns auto-branch**; AI never mutates
+  directly; needs Generative **G1**. Ref `12_CANVAS_AI_INTEGRATION.md`, `generative/context/`.
+- **E12 · Versioning** — snapshot / branch / merge. Ref `16_CANVAS_VERSIONING.md`.
+- **E16 · Collections / data-binding** (Ref `19`) · **E17 · Real-time collaboration** (Ref `20`;
+  Phase 3→4 boundary, needs a platform WS seam).
 
 ## PHASE 4 — Knowledge & community
 - **E14 · Research → Canvas adapter** — semantic content → experiences; no presentation logic
@@ -188,10 +275,13 @@ motion-engine · template-engine · publishing-engine · ingestion-engine`.
 ---
 
 ## Immediate next
-Phases 1 + 2 (E1–E9) are **complete**. Next is **Phase 3 → E10 Intent-Patch application** (apply a
-mutation plan from the Generative plane to the graph; AI redesigns auto-branch; AI never mutates
-directly) — it needs Generative **G1** (the Intent-Patch contract). Then E11 ingestion (BYOD) · E12
-versioning · E13 full motion/design packs.
+Phases 1 + 2 (E1–E9) and the V2 productization program are **complete**. The **V3 "Beat Framer"
+program** (above) re-sequences Phase 3: **E13** (design-pack depth + Scroll Narrative Engine +
+Interactions — the one-tap re-skin demo; the lead epic; no external dep) → **E11-v2** (design-intent
+ingestion; deterministic core has no AI dep) → **E10** Intent-Patch (needs Generative **G1**) → **E12**
+versioning → **E16** collections → **E17** collaboration. **First build slice:** the E13 schema spine —
+`canvas-schema/src/interactions.ts` + `Canvas` wiring + `SCHEMA_VERSION` 1→2 migrate, plus
+`packages/design-packs` with **Editorial** as the first non-Minimal proof (Minimal⇄Editorial re-skin).
 
 Run locally (canvas repo): `pnpm playground` (renderer, :3200) · `pnpm --filter @arsyen/editor-app dev`
 (editor, :3201) · `pnpm --filter @arsyen/embed-app dev` (embed, :3202) · `pnpm publish:dev`
