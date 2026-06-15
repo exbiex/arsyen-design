@@ -37,7 +37,7 @@ Workstreams (sequential):
   draft/published; canvas_shares ACL table ready), owner-scoped CRUD + `POST /publish` + **My Canvas**
   list (`GET /v1/canvases`, `?project_id=` filters to a project). Integration test green. *(Specify
   read-enforcement still deferred — UI will show it; ACL is a follow-up.)*
-- **WS-C · Renderer + editor rebuild** — `[~]` in progress. **Done:** the **Canvas Home homepage**
+- **WS-C · Renderer + editor rebuild** — `[x]` done (2026-06-15, canvas `canvas-v2`). The **Canvas Home homepage**
   rebuilt to the design kit (greeting + AI-intent composer, start-from chips, your-canvases library with
   search/tabs/grid-list, Arsyen bar); the **editor rebuilt to the `canvas-editor` kit verbatim** (design
   system reproduced — Ink/Azure/Geist; canvas-as-floating-page, contextual section tools, on-demand
@@ -45,16 +45,19 @@ Workstreams (sequential):
   **branding splash** (logo + Geist) on window open; **create opens the canvas window directly**; default
   template = the design-kit **Narrative Canvas** (+ curated category templates); **E11 ingestion**
   (`@arsyen/ingestion-engine`) turns the 17 raw `raw_templates` into **editable** canvases (deterministic
-  HTML→Schema; images carried via `assetId` + painted in the editor; a "Preview" keeps the original HTML).
-  **Remaining:** rebuild the **published renderer** to the published-canvas kit (rAF scroll engine: pinned
-  hero, parallax, reveals).
+  HTML→Schema; images carried via `assetId` + painted in the editor; a "Preview" keeps the original HTML);
+  and the **published reader** rebuilt to the `published-canvas` kit — `PublishedCanvas` + `reader-css`
+  (DS tokens + the kit's `canvas.css`) + `reader-engine` (one rAF loop: progress, staggered reveals,
+  parallax, pinned hero, auto-hiding reader bar), wired into the **embed** host.
 - **WS-D · Create / publish flow (platform)** — `[x]` done (2026-06-14, platform `canvas-v2`).
   `CanvasRepository` + `myCanvasesProvider` on `/v1/canvases`; removed the E9 placeholder; **Profile
   'Create a canvas' → branding takeover → draft → title + visibility picker → publish**; **My Canvas**
   in the Arsyen bar (`/canvas/mine`); **Project ▸ Canvas** tab (listing + 'New canvas'); the **editor
   opens in its own native window** (`desktop_multi_window` → WebView → azure editor). analyze + macOS
-  build/codesign green. *(Needs API restarted for routes; editor-window **save-back** to `/v1/canvases`
-  via the bridge is a follow-up.)* Detail below:
+  build/codesign green. *(Needs API restarted for routes. Editor-window **save-back** is now done: the
+  editor posts edits → sub-window JS handler → `invokeMethod(0,…)` → main window's authed repo →
+  `PATCH /v1/canvases/:id`; the **load** complement — reopening seeds the editor from the server doc — is
+  the remaining piece.)* Detail below:
   Delete current canvas placeholders. **Profile
   overview → "Create a canvas"** → panels dissolve into the **animating Arsyen branding** → opens a
   **separate window** running the Canvas flow (the Azure design; the coral shell stays in the main
