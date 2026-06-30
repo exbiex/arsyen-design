@@ -156,6 +156,24 @@ Treat POC code as a ~4/10 baseline to **evolve**, not rewrite.
     list endpoint (e.g. `GET /v1/me/people` = distinct project members) to choose from.
   - [ ] **UPCOMING sidebar section** in the Work rail when Calendar is active (next events), per the mockup.
   - [ ] Minor: date/time use Material `showDatePicker`/`showTimePicker` (not glass-styled) — build glass pickers.
+- [~] **C9 Notes — custom block editor.** Started 2026-06-30. **Decision: custom Flutter block editor**
+  (NOT appflowy_editor — avoids the MPL license + heavy restyle; full design-language control), per the
+  founder + `temp/EDITOR_SPEC.md` + the `temp/arsyen_notes_*.html` refs. **Backend (done + verified):**
+  migration `00018` (`work_items.document jsonb` + `project_id`; `work_item_revisions` append-only). Work
+  module: `GET /work/items/{id}/document` (load), `PUT …/document` (autosave → denormalised title/body +
+  revision), `GET …/revisions` + `…/revisions/{rev}` (history/restore). **Frontend (done):** `features/notes/`
+  (NoteDoc/NoteBlock/NoteSpan/NoteMark model + repo + `notesListProvider`) + `views/notes_view.dart` (card
+  grid → opens editor) + `views/note_editor_view.dart` (title, meta, divider, core blocks [text, H1–H3,
+  bulleted, numbered, to-do, quote, callout, divider, code]; Enter-split / Backspace-merge via focus-node
+  key handling; markdown shortcuts; to-do toggle; debounced autosave; in-panel + full-screen surfaces).
+  Wired into the Notes category. Body accent = blue `#2E7DF6`; chrome on app tokens.
+  **Pending / next layers:**
+  - [ ] **Slash / + block-inserter menu** (filterable) + block context menu (turn-into/duplicate/color/delete).
+  - [ ] **Selection toolbar + INLINE marks** (bold/italic/underline/strike/code/link) — needs rich inline
+    editing within a block (the hard part; block content is single-span plain text today).
+  - [ ] **@mention** chip (resolve Contacts → insert chip + notify, ties into the Inbox) + "give access?" prompt.
+  - [ ] **Embeds:** image (reuse asset presigned upload) + bookmark (server OpenGraph); video/file = Phase 2.
+  - [ ] **Revision-history UI** (backend ready) + drag-handle reorder + project-tag/collaborator-avatars meta.
 
 ## WS-D — Web app — ❌ DROPPED (2026-06-14)
 The web client/companion is **no longer built**; the app ships on macOS (+ iOS later) only.
