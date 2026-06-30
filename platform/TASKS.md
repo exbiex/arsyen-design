@@ -129,6 +129,33 @@ Treat POC code as a ~4/10 baseline to **evolve**, not rewrite.
   object list) + an autosaving editor with all states (loading/empty/error/just-deleted). HTTP
   smoke-tested end-to-end (counts, list, create/patch/delete, 422 on bad status). **Acceptance met:
   the new categories CRUD live.** *(Inbox/Tasks/Moodboards/etc. remain scaffolded placeholders.)*
+- [x] **C7 Inbox (notifications).** Done 2026-06-30. New **`notifications`** module + `00016_notifications.sql`
+  (recipient-scoped table: `kind` mention|assigned|comment|reply|completed, denormalised actor_name +
+  target_title, project/task refs, read_at). `GET /v1/me/notifications?filter=`, `POST …/{id}/read`,
+  `POST …/read-all`; per-filter unread counts. Flutter `features/inbox/` (models · repo ·
+  `inboxControllerProvider`) + `views/inbox_view.dart` (filter chips All/Mentions/Assigned/Comments,
+  TODAY/EARLIER groups, avatar+type-badge rows, unread dots); tapping marks-read + **deep-links to the
+  task board**. devseed seeds examples linked to real tasks. Ref `design-overhaul-instructions/ref/inbox.png`.
+  **Pending / later:**
+  - [ ] **Live events** — auto-create notifications on real @-mention (parse `@username` → `profiles.username`
+    in `projects.AddComment`), assignment (`SetAssignees`), and comment. Inject `notifications.Service` into
+    `projects.NewService` behind a `Notifier` interface (mirror the existing `SetMedia` injection). Today the
+    Inbox shows only seeded rows.
+  - [ ] **Sidebar FILTERS section** in the Work rail when Inbox is active (All/Mentions/Assigned/Comments with
+    counts), per the mockup. Only the top filter chips exist so far.
+  - [ ] Minor: mockup uses a blue accent (we use the monochrome baseline); wire the bottom-bar bell → Inbox.
+- [x] **C8 Calendar.** Done 2026-06-30. New **`calendar`** module + `00017_calendar.sql` (`calendar_events`,
+  `calendar_event_members`, + `work_items.date`). `GET /v1/me/calendar?from=&to=` **aggregates** standalone
+  events + task due-dates (red, from `tasks.due_date`) + dated TODOs (amber) into one feed; `POST/PATCH/DELETE
+  /v1/me/calendar/events` (CRUD + members, transactional, owner-scoped). Flutter `features/calendar/` +
+  `views/calendar_view.dart` (**Month / 3-month / Year** views via `LayoutBuilder` grids — today circle, colour
+  pills, view switcher, ←/→) + `calendar_event_editor.dart` (title/notes/date+time/all-day/colour, create/edit/
+  delete). Task chips deep-link to the board. devseed seeds the current month. Ref `…/ref/calendar.png`.
+  **Pending / later:**
+  - [ ] **Event members picker UI** — backend stores `member_ids`, but the editor needs a people/collaborators
+    list endpoint (e.g. `GET /v1/me/people` = distinct project members) to choose from.
+  - [ ] **UPCOMING sidebar section** in the Work rail when Calendar is active (next events), per the mockup.
+  - [ ] Minor: date/time use Material `showDatePicker`/`showTimePicker` (not glass-styled) — build glass pickers.
 
 ## WS-D — Web app — ❌ DROPPED (2026-06-14)
 The web client/companion is **no longer built**; the app ships on macOS (+ iOS later) only.
@@ -168,8 +195,10 @@ port (B1), **primitive parity B2**, specimen route **B3**, fonts (B4), **theme l
 module: Notes/Ideas/References CRUD). The whole WS-B port + WS-C are complete; WS-A is complete
 except A6 (distribution, needs a paid Apple Dev account). Now → breadth:
 1. Breadth: port **Discover / Tools / Studio / Profile** onto the B-series primitives/kit. **→ next.**
-2. Graduate more Work categories as they come online (Inbox/Tasks/Moodboards/Contacts/…) — the
-   `work` module + rail/object-list pattern is in place to extend.
+2. Graduate more Work categories: **Inbox (C7) + Calendar (C8) shipped 2026-06-30** (each its own module +
+   migration; merged to `main` via PR #15). See their **Pending / later** sub-items — Inbox live-events +
+   filters rail; Calendar members picker + UPCOMING rail. Remaining categories: Tasks / Moodboards / Assets /
+   Contacts / Opportunities — the `work` / notifications / calendar module + rail pattern is in place to extend.
 3. **A6 distribution** — Developer-ID signing + notarization (blocked on a paid Apple Dev Program).
 Parallel track (separate repo): **E1/E2** scaffold `arsyen-canvas-engine` + lock `canvas-schema`.
 Resolve **`../ECOSYSTEM.md §5.1` (does Flutter render Canvas via WebView or native?)** before Phase 2.
