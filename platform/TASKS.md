@@ -167,11 +167,24 @@ Treat POC code as a ~4/10 baseline to **evolve**, not rewrite.
   bulleted, numbered, to-do, quote, callout, divider, code]; Enter-split / Backspace-merge via focus-node
   key handling; markdown shortcuts; to-do toggle; debounced autosave; in-panel + full-screen surfaces).
   Wired into the Notes category. Body accent = blue `#2E7DF6`; chrome on app tokens.
+  **Done since:**
+  - [x] **+ block-inserter** (focus-line gutter `+` → on-screen `showMenu`; the `/` trigger was removed at
+    founder request). **Merged (PR #16).**
+  - [x] **Selection toolbar + INLINE marks** (2026-06-30): a `RichFieldController` (TextEditingController
+    subclass) stores marks as char ranges, renders them via `buildTextSpan`, and shifts ranges on every
+    edit; `toSpans()` round-trips to NoteSpan/NoteMark. Marks: **bold/italic/underline/strike/code**.
+    Apply via a floating **auto-show selection toolbar** (anchored above the block, minimal marks +
+    **Aa** expand → turn-into block types; `TextFieldTapRegion` so taps don't collapse the selection) or
+    **Cmd+B/I/U · Cmd+Shift+S · Cmd+E**. Also: Enter on an empty styled block exits to plain text;
+    Shift+Enter soft-break; tighter body line-height (1.5). **⚠️ Hard-won fix:** the editor MUST use a
+    `ListView` (not `SingleChildScrollView`) — a focused multiline `TextField` in a scroll view relayouts
+    every frame and storms the mouse tracker (`!_debugDuringDeviceUpdate`) → frozen input. Also: this
+    stateful editor does NOT survive hot-reload (blanks); verify on a full app restart. *(Not committed yet.)*
   **Pending / next layers:**
-  - [ ] **Slash / + block-inserter menu** (filterable) + block context menu (turn-into/duplicate/color/delete).
-  - [ ] **Selection toolbar + INLINE marks** (bold/italic/underline/strike/code/link) — needs rich inline
-    editing within a block (the hard part; block content is single-span plain text today).
+  - [ ] Toolbar extras: **link** (URL input) + **text color** + clear-formatting.
   - [ ] **@mention** chip (resolve Contacts → insert chip + notify, ties into the Inbox) + "give access?" prompt.
+  - [ ] **Embeds:** image (reuse asset presigned upload) + bookmark (server OpenGraph); video/file = Phase 2.
+  - [ ] **Revision-history UI** (backend ready) + drag-handle reorder + project-tag/collaborator-avatars meta.
   - [ ] **Embeds:** image (reuse asset presigned upload) + bookmark (server OpenGraph); video/file = Phase 2.
   - [ ] **Revision-history UI** (backend ready) + drag-handle reorder + project-tag/collaborator-avatars meta.
 
