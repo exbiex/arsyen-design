@@ -137,10 +137,14 @@ Treat POC code as a ~4/10 baseline to **evolve**, not rewrite.
   TODAY/EARLIER groups, avatar+type-badge rows, unread dots); tapping marks-read + **deep-links to the
   task board**. devseed seeds examples linked to real tasks. Ref `design-overhaul-instructions/ref/inbox.png`.
   **Pending / later:**
-  - [ ] **Live events** — auto-create notifications on real @-mention (parse `@username` → `profiles.username`
-    in `projects.AddComment`), assignment (`SetAssignees`), and comment. Inject `notifications.Service` into
-    `projects.NewService` behind a `Notifier` interface (mirror the existing `SetMedia` injection). Today the
-    Inbox shows only seeded rows.
+  - [x] **Live events (2026-07-01).** Notifications now auto-create on real events. A `Notifier` interface
+    (mirroring `SetMedia`) is injected into `projects` **and** `work`, with an adapter in `cmd/api` mapping to
+    `notifications.CreateParams` (so neither module imports notifications). `projects` fires **`assigned`**
+    (newly-added assignees only, diffed against the prior set in `SetAssignees`), **`comment`**/`reply`
+    (task assignees / parent-comment author in `AddComment`), and **`mention`** (`@username` parsed from the
+    comment body → `identity.UserIDByUsername`). A `Directory` (identity: `DisplayName` + `UserIDByUsername`)
+    denormalises actor names + resolves mentions. Verified live: assign/comment/@mention all land in the
+    recipient's Inbox. *(See C9 for note @-mentions.)*
   - [ ] **Sidebar FILTERS section** in the Work rail when Inbox is active (All/Mentions/Assigned/Comments with
     counts), per the mockup. Only the top filter chips exist so far.
   - [ ] Minor: mockup uses a blue accent (we use the monochrome baseline); wire the bottom-bar bell → Inbox.
@@ -152,8 +156,9 @@ Treat POC code as a ~4/10 baseline to **evolve**, not rewrite.
   pills, view switcher, ←/→) + `calendar_event_editor.dart` (title/notes/date+time/all-day/colour, create/edit/
   delete). Task chips deep-link to the board. devseed seeds the current month. Ref `…/ref/calendar.png`.
   **Pending / later:**
-  - [ ] **Event members picker UI** — backend stores `member_ids`, but the editor needs a people/collaborators
-    list endpoint (e.g. `GET /v1/me/people` = distinct project members) to choose from.
+  - [ ] **Event members picker UI** — backend stores `member_ids`; **`GET /v1/me/people` now exists** (built
+    with C9's @-mention, 2026-07-01: distinct project collaborators `{user_id, name, username, role}` +
+    `peopleProvider`) — wire the calendar editor's member picker to it.
   - [ ] **UPCOMING sidebar section** in the Work rail when Calendar is active (next events), per the mockup.
   - [ ] Minor: date/time use Material `showDatePicker`/`showTimePicker` (not glass-styled) — build glass pickers.
 - [~] **C9 Notes — custom block editor.** Started 2026-06-30. **Decision: custom Flutter block editor**
@@ -180,13 +185,56 @@ Treat POC code as a ~4/10 baseline to **evolve**, not rewrite.
     `ListView` (not `SingleChildScrollView`) — a focused multiline `TextField` in a scroll view relayouts
     every frame and storms the mouse tracker (`!_debugDuringDeviceUpdate`) → frozen input. Also: this
     stateful editor does NOT survive hot-reload (blanks); verify on a full app restart. *(Not committed yet.)*
-  **Pending / next layers:**
-  - [ ] Toolbar extras: **link** (URL input) + **text color** + clear-formatting.
-  - [ ] **@mention** chip (resolve Contacts → insert chip + notify, ties into the Inbox) + "give access?" prompt.
-  - [ ] **Embeds:** image (reuse asset presigned upload) + bookmark (server OpenGraph); video/file = Phase 2.
-  - [ ] **Revision-history UI** (backend ready) + drag-handle reorder + project-tag/collaborator-avatars meta.
-  - [ ] **Embeds:** image (reuse asset presigned upload) + bookmark (server OpenGraph); video/file = Phase 2.
-  - [ ] **Revision-history UI** (backend ready) + drag-handle reorder + project-tag/collaborator-avatars meta.
+  - [x] **@mention chip + live Inbox wiring (2026-07-01).** Typing a fresh `@` at a word boundary opens a
+    people picker (`showMenu`, mirrors the `+` inserter) sourced from **`GET /v1/me/people`** (`peopleProvider`);
+    picking inserts an accent-blue mention. `RichFieldController` gained a parallel mention range→userId set that
+    round-trips `NoteMark.mentionId` (previously dropped), renders via `buildTextSpan`, and shifts/clears on edit.
+    On autosave the `work` module diffs old-vs-new mention sets and raises a **`mention`** notification carrying
+    `work_item_id`; tapping it in the Inbox opens the note (`onOpenNote` → `NotesView(openNoteId:)`). New migration
+    `00019` (`notifications.work_item_id`); devseed seeds a 3-person crew (`nadia`/`soren`/`mara`, pw `root`) on a
+    demo project so the picker + notifications are exercisable. Backend: unit tests (`parseMentions`, `mentionIDs`)
+    + a DB integration test (no-re-notify-on-autosave). **Verified live** (chip renders; recipient's Inbox gets
+    the mention). *(picker is list-only for now — live type-to-filter is a follow-up.)*
+  - [x] **@mention picker → live inline overlay (2026-07-01).** Reworked per founder feedback from the safe
+    `showMenu` into a caret-anchored `CompositedTransformFollower`/`OverlayEntry`: type after `@` and it filters
+    live (name/username/word-prefix > substring, ties keep project-closeness order), ↑/↓ move, Enter/Tab picks
+    the top match, Esc/space/delete closes. A frosted-glass card (blur + soft shadow + hairline edge), width-clamped
+    to the window; rows show **real profile photos** (`/me/people` returns a presigned `photo_url`; devseed seeds
+    gradient avatars). *(Left: live type-to-filter DONE; give-access prompt + `@username` free-parse remain.)*
+  - [x] **Toolbar extras (2026-07-01):** **link** (capture-selection → URL dialog → restore+apply, so the dialog's
+    focus-steal doesn't drop the selection), **text colour** (inline swatch row, 7-colour palette, no focus loss),
+    **clear-formatting**. `RichFieldController` now carries value-marks (link URL, colour token) alongside the
+    boolean marks — round-trips `NoteMark.link`/`color` (were dropped), renders (link=accent+underline,
+    colour=token→Color), shifts on edit.
+  - [x] **Revision-history UI (2026-07-01):** ⋯ menu → **Version history** side panel (dim scrim + right drawer)
+    over `GET …/revisions`; each row = relative time + **Restore** (fetches the snapshot doc → rebuilds the
+    editor → re-saves = non-destructive). *(Note: a revision per autosave → long histories; server-side thinning
+    is a follow-up.)*
+  - [x] **Embeds — image + bookmark (2026-07-01):** + menu gains **Image** (file_picker → reuse the asset
+    presigned-upload pipeline; block stores the **asset id**, render resolves a fresh presigned URL — presigned
+    URLs expire so we never persist them) and **Bookmark** (new **`POST /v1/work/unfurl`** — server-side OpenGraph
+    fetch with an SSRF guard: http(s) only, resolves+dials the IP, blocks loopback/private/link-local, 6s timeout,
+    512KB cap, ≤4 redirects → `{url,title,description,image,site}`; renders a card). Hover-remove on both; video/file
+    = Phase 2. Bookmark card is display-only for now (no `url_launcher` dep — open-on-click is a follow-up).
+  - [x] **Note access on @mention + read-only (2026-07-02) — fixed a real bug.** The @mention deep-link was
+    dead: reads were owner-scoped so a mentioned user got 404. Now migration `00020` **`work_item_access`**
+    (item_id,user_id); the note save **grants read access** to everyone mentioned (idempotent, `unnest`);
+    `GetDocument`/`Revisions`/`RevisionDocument` are **owner-OR-granted**; the DTO carries `read_only` so the
+    editor opens **view-only** for non-owners (fields readOnly, no autosave/+/toolbar/drag, "View only" chip).
+    Saves/delete stay owner-only. Integration-tested (mentioned=read-only, owner=editable, stranger=404); verified
+    live via API.
+  - [x] **Revision thinning (2026-07-02):** the save coalesces rapid autosaves — updates the newest revision if
+    it's <90s old (created_at kept, so a fresh snapshot starts after ~90s of activity), else inserts. History
+    stays meaningful instead of one-row-per-keystroke.
+  - [x] **Drag-handle reorder (2026-07-02):** each block's gutter gets a drag handle (`Draggable<_Blk>` + a
+    per-block `DragTarget`, accent drop-line); dropping reorders + persists. Hidden in read-only.
+  - [x] **Note meta (2026-07-02):** the meta row gains a **project picker** (`showMenu` over the user's projects →
+    sets `project_id`) and **collaborator avatars** (a stack of the note's @-mentioned people, real photos).
+  - [x] **Bookmark open-on-click (2026-07-02):** added `url_launcher`; tapping a bookmark card opens its URL
+    externally (needed a full rebuild for the native plugin).
+  - [ ] **Remaining:** inline-link click-to-open (bookmark opens; inline `link` marks don't yet) · `@username`
+    free-parse (type a full `@handle` without picking) · @mention give-access *prompt* (today access is
+    auto-granted on mention, no prompt).
 
 ## WS-D — Web app — ❌ DROPPED (2026-06-14)
 The web client/companion is **no longer built**; the app ships on macOS (+ iOS later) only.

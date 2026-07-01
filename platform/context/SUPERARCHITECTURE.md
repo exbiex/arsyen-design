@@ -171,6 +171,24 @@ interfaces today, which keeps a clean seam if a module is ever extracted.
   `00014_work_items.sql`).** Flutter `features/work/` (models · repo · `FutureProvider.family`
   + a `WorkActions` mutator that invalidates) wired into the Work-view rail (live counts +
   object list) + an autosaving editor.
+  **(2026-07-01 — Notes @-mentions:** the block-document save (`PUT /v1/work/items/{id}/document`)
+  now raises an inbox **`mention`** notification for each user newly `@`-mentioned in the note — a
+  nil-safe **`Notifier`** + **`Directory`** injected into `work.Service` (like `SetMedia`); the
+  handler diffs the *old* vs *new* document mention-id sets so autosave never re-notifies. The
+  notification's `work_item_id` deep-links the recipient back to the note.**)**
+  **(2026-07-01 — bookmark embeds:** **`POST /v1/work/unfurl`** `{url}` → server-side OpenGraph fetch
+  (`golang.org/x/net/html`) returning `{url,title,description,image,site}`, behind an SSRF guard —
+  http(s) only, a custom `DialContext` that resolves + dials the IP and blocks loopback/private/
+  link-local, 6s timeout, 512 KB read cap, ≤4 redirects.**)** The Notes block editor (Flutter) now also
+  carries inline **link/colour value-marks**, a **version-history** panel (over the existing
+  `…/revisions` endpoints), **image embeds** (reuse the assets presigned-upload; the block stores
+  the asset id, the client re-resolves a fresh URL on render), **drag-handle block reorder**, a note
+  **project picker + collaborator avatars**, and **bookmark open-on-click** (`url_launcher`).
+  **(2026-07-02 — note access:** migration `00020` **`work_item_access`** (item_id,user_id) — a note
+  save **grants read access** to everyone `@`-mentioned (so the Inbox deep-link opens, not 404s);
+  `GetDocument`/`Revisions`/`RevisionDocument` became **owner-OR-granted**, the doc DTO carries
+  `read_only`, and the editor opens **view-only** for non-owners. Saves/delete stay owner-only.
+  Revisions are **coalesced** (one per ~90s of activity, not per autosave).**)**
 - `canvas` — **to be REBUILT from scratch.** The first implementation (Canvas V2
   free-form moodboard: opaque jsonb block-doc, snapshots, mentions, Flutter
   editor) was **removed entirely on 2026-06-12 by founder decision** — the Go
@@ -184,7 +202,16 @@ interfaces today, which keeps a clean seam if a module is ever extracted.
 - `discover` — search artists/projects/communities; crew formation.
 - `communities` — public/private/hidden; posts, discussions.
 - `chat` — conversations, project/community chat (E2E for 1:1 — see §4).
-- `notifications` — categories, delivery.
+- `notifications` — the Inbox: recipient-scoped `notifications` table (`00016`), `GET /v1/me/
+  notifications?filter=`, mark-read / read-all, per-filter unread counts. **Live events wired
+  2026-07-01:** a `Notify(CreateParams)` entry point (drops self-notifications) injected into
+  `projects` + `work` behind their own `Notifier` interfaces (adapters in `cmd/api`, so those
+  modules don't import notifications). `projects` fires **`assigned`** (new assignees only, diffed),
+  **`comment`**/`reply` (task assignees / parent-comment author), and **`mention`** (`@username`
+  parsed from a comment, resolved via identity's `UserIDByUsername`); `work` fires **`mention`** on
+  note @-mentions. `00019` added a nullable **`work_item_id`** deep-link target (note mentions).
+  Companion: **`GET /v1/me/people`** (projects module) — the caller's distinct collaborators
+  across their projects (`{user_id, name, username, role}`) — powers the @-mention picker.
 - `tools` — moodboards, scripts, resumes, portfolios, budgets, invoices.
 - `media` — upload, signed URLs, transcoding orchestration (see §5).
 - `realtime` — WebSocket hub, presence (see §6).
