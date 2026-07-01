@@ -232,6 +232,18 @@ Treat POC code as a ~4/10 baseline to **evolve**, not rewrite.
     sets `project_id`) and **collaborator avatars** (a stack of the note's @-mentioned people, real photos).
   - [x] **Bookmark open-on-click (2026-07-02):** added `url_launcher`; tapping a bookmark card opens its URL
     externally (needed a full rebuild for the native plugin).
+  - [x] **Stability / data-safety / perf hardening (2026-07-02)** — a 3-angle audit found real data-loss bugs,
+    now fixed. **Never-lose-data:** editor keyed by `ValueKey(noteId)` (kills the note-switch corruption that saved
+    the old note's blocks onto the new id); **mark-preserving split/merge** (`spansIn`/`setSpans` — Enter/Backspace
+    no longer drop bold/link/colour/mention); a **durable local draft** (`note_draft_store.dart`, SharedPreferences
+    write-ahead, recovered on load) that survives crash/kill/offline; **lifecycle flush** (WidgetsBindingObserver on
+    background/quit); **load-failure error state** that disables saving so it can't overwrite the good server doc +
+    type-drift-tolerant `fromJson`; **retry with backoff**; transient upload props stripped. **Stability:** one
+    `_sanitize()` clamps/coalesces all four mark stores after every edit (fixes value-mark fragmentation);
+    **property tests** (round-trip, split-at-every-offset, 500 randomised edits, tolerant parse) — 12 green.
+    **Perf:** `ListView.builder` (lazy blocks) + per-block `RepaintBoundary`/key; memoized `buildTextSpan`;
+    `_meta()` extracted to its own `ConsumerWidget`; O(n²) list numbering → O(n). *(Kept the per-block full-widget
+    extraction OUT — too risky vs the editor's fragility gotchas; ListView.builder captured the win.)*
   - [ ] **Remaining:** inline-link click-to-open (bookmark opens; inline `link` marks don't yet) · `@username`
     free-parse (type a full `@handle` without picking) · @mention give-access *prompt* (today access is
     auto-granted on mention, no prompt).

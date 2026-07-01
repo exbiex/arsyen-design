@@ -189,6 +189,13 @@ interfaces today, which keeps a clean seam if a module is ever extracted.
   `GetDocument`/`Revisions`/`RevisionDocument` became **owner-OR-granted**, the doc DTO carries
   `read_only`, and the editor opens **view-only** for non-owners. Saves/delete stay owner-only.
   Revisions are **coalesced** (one per ~90s of activity, not per autosave).**)**
+  **(2026-07-02 — Notes hardening (client):** the editor is now failsafe against data loss — keyed by note id
+  (no cross-note write), mark-preserving split/merge, a **durable SharedPreferences draft** written ahead of
+  every save and recovered on load (survives crash/kill/offline), lifecycle-flush on background/quit, a
+  load-failure state that refuses to overwrite the server copy, tolerant `fromJson`, and save retry/backoff.
+  The inline-mark engine self-sanitises (clamp/coalesce) after every edit and is covered by property tests.
+  Perf: lazy `ListView.builder` + per-block `RepaintBoundary`, memoised span building, meta row scoped to its
+  own `ConsumerWidget`.**)**
 - `canvas` — **to be REBUILT from scratch.** The first implementation (Canvas V2
   free-form moodboard: opaque jsonb block-doc, snapshots, mentions, Flutter
   editor) was **removed entirely on 2026-06-12 by founder decision** — the Go
